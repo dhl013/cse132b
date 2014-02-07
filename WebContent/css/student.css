@@ -1,0 +1,77 @@
+html, body, div {
+	background-color: #f5f5f5;
+	width : 100%;
+}
+div#student-table{
+	padding-top:50px;
+}
+table {
+	width : 100 %;
+	background-color: #f5f5f5;
+	padding: 5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #ebebeb;
+}
+table td, #table th {
+	padding: 1px 5px;
+}
+table thead {
+	font: normal 15px Helvetica Neue,Helvetica,sans-serif;
+	text-shadow: 0 1px 0 white;
+	color: #999;
+}
+table th {
+	text-align: left;
+	border-bottom: 1px solid #fff;
+}
+table td {
+	font-size: 14px;
+}
+table td:hover {
+	background-color: #fff;
+}
+
+span#pid {
+	font: normal 14px "Courier New", Courier, monospace;
+	color: #000;
+	text-shadow: 0 1px 0 grey;
+	font-weight: bold;
+	
+}
+
+div#banner { 
+       position: absolute; 
+       top: 0; 
+       left: 0; 
+       width: 100%; 
+ }
+     
+ div#banner-content { 
+       width: 75%; 
+       margin: 0 auto; 
+       padding: 10px; 
+       background-color: #f5f5f5; 
+      
+}
+
+span#banner-text {
+	font: normal 17px Helvetica Neue,Helvetica,sans-serif;
+	color: #000;
+	text-shadow: 0 1px 0 white;
+	font-weight: bold;
+
+}
+
+#banner-link {
+	font: normal 17px Helvetica Neue,Helvetica,sans-serif;
+	color: #000;
+	text-shadow: 0 1px 0 white;
+	padding: 2px 8px 2px 8px;
+	background-color: #e5e5e5;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #000000;
+}

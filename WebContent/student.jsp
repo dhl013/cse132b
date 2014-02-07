@@ -1,0 +1,152 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="test/css" href="css/student.css">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Student Modification Page</title>
+</head>
+<%@ page language="java" import="cse132b.DBConn" %>
+<%@ page import="java.sql.*" %>
+<%
+	DBConn db = new DBConn();
+	db.openConnection();
+	PreparedStatement pstmt;
+%>
+<!-- STUDENT INSERTION CODE -->
+<%
+	String action = request.getParameter("action");
+	if( null != action && action.equals("insert") ){
+		String student_insert = "INSERT INTO Student VALUES (?,?,?,?,?,?,?)";
+
+		pstmt = db.getPreparedStatment(student_insert);
+		
+		pstmt.setString(1, request.getParameter("PID") );
+		pstmt.setInt(2, Integer.parseInt(request.getParameter("SSN")) );
+		pstmt.setString(3, request.getParameter("FIRSTNAME") );
+		pstmt.setString(4, request.getParameter("MIDDLENAME") );
+		pstmt.setString(5, request.getParameter("LASTNAME") );
+		pstmt.setBoolean(6, (request.getParameter("ENROLLED").equals("true")) ? true : false );
+		pstmt.setString(7, request.getParameter("RESIDENCY").toLowerCase());
+		
+		boolean success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed PreparedStatement with a success of : " + success);
+
+	}
+%>
+<!-- STUDENT UPDATE CODE -->
+<%
+	if( null != action && action.equals("update") ){
+		String student_update = "UPDATE Student SET PID = ?, SSN = ?, " +
+								"FirstName = ?, MiddleName = ?, LastName = ?, " +
+								"Enrolled = ?, Residency = ? " +
+								"WHERE PID = ?";
+		
+		pstmt = db.getPreparedStatment(student_update);
+		
+		pstmt.setString(1, request.getParameter("PID") );
+		pstmt.setInt(2, Integer.parseInt(request.getParameter("SSN")) );
+		pstmt.setString(3, request.getParameter("FIRSTNAME") );
+		pstmt.setString(4, request.getParameter("MIDDLENAME") );
+		pstmt.setString(5, request.getParameter("LASTNAME") );
+		pstmt.setBoolean(6, (request.getParameter("ENROLLED").equals("true")) ? true : false );
+		pstmt.setString(7, request.getParameter("RESIDENCY").toLowerCase());
+		pstmt.setString(8, request.getParameter("PID") );
+		
+
+	}
+%>
+<!-- Query Code --- MUST BE AFTER INSERT/UPDATE/DELETE SECTIONS -->
+<%
+	String query = "SELECT * FROM Student";
+	db.executeQuery(query);
+	
+	ResultSet rs = db.getResultSet();
+%>
+
+<body>
+	<div id="banner">
+		<div id="banner-content">
+			<span id="banner-text">Links to other Forms: </span>
+			<a href="class.jsp" id="banner-link">Class</a>
+			<a href="course.jsp "id="banner-link">Course</a>
+			<a href="faculty.jsp" id="banner-link">Faculty</a>
+			<a href="student.jsp" id="banner-link">Student</a>
+
+			
+		</div>
+	</div>
+	<div id="student-table" style="float:left">
+		<table>
+			<thead>
+				<tr>
+					<th>PID</th>
+					<th>SSN</th>
+					<th>First Name</th>
+					<th>Middle Name</th>
+					<th>Last Name </th>
+					<th>Enrolled</th>
+					<th>Residency</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<form id="insert_student" action="student.jsp" method="post">
+						<input type="hidden" value="insert" name="action">
+						<th><input value="" name="PID" size="10"></th>
+						<th><input value="" name="SSN" size="10"></th>
+						<th><input value="" name="FIRSTNAME" size="15"></th>
+						<th><input value="" name="MIDDLENAME" size="15"></th>
+						<th><input value="" name="LASTNAME" size="15"></th>
+						<th><select name="ENROLLED" form="insert_student">
+								<option value="true">True</option>
+								<option value="false">False</option>
+							</select></th>
+						<th><select name="RESIDENCY" form="insert_student">
+								<option value="ca">California Resident</option>
+								<option value="nonca">Non-California Resident</option>
+								<option value="foreign">Foreign Resident</option>
+							</select></th>
+						<th><input type="submit" value="Insert"></th>
+					</form>
+				</tr>
+				<%
+					while( rs.next() ) {
+				%>
+						<tr>
+							<form id="update_student" action="student.jsp" method="post">
+								<input type="hidden" value="update" name="action">
+								<td><span id="pid"><%= rs.getString("PID") %></span></td>
+								<td><input value="<%= rs.getString("SSN") %>" name="SSN" size="10"></td>
+								<td><input value="<%= rs.getString("FirstName") %>" name="FIRSTNAME" size="15"></td>
+								<td><input value="<%= rs.getString("MiddleName") %>" name="MIDDLENAME" size="15"></td>
+								<td><input value="<%= rs.getString("LastName") %>" name="LASTNAME" size="15"></td>
+								<td><select name="ENROLLED" form="update_student">
+									<option value="true" <% if(rs.getBoolean("Enrolled")) out.println("selected"); %> >True</option>
+									<option value="false" <% if(!rs.getBoolean("Enrolled")) out.println("selected"); %> >False</option>
+									</select></td>
+								<td><select name="RESIDENCY" form="update_student">
+									<option value="CA" <% if(rs.getString("Residency").equals("ca")) out.println("selected"); %> >California Resident</option>
+									<option value="NONCA" <% if(rs.getString("Residency").equals("nonca")) out.println("selected"); %> >Non-California Resident</option>
+									<option value="FOREIGN" <% if(rs.getString("Residency").equals("foreign")) out.println("selected"); %> >Foreign Resident</option>
+									</select></td>
+								<td><input type="submit" value="Update"></td>
+								<form id="delete_student" action="student.jsp" method="post">
+									<input type="hidden" value="delete" name="action">
+									<input type="hidden" value="<%= rs.getString("PID") %>" name="SSN">
+									<td><input type="submit" value="Delete"></td>
+								</form>
+							</form>
+				<%
+					}
+				%>
+			</tbody>
+		</table>
+	</div>
+	<%
+		db.closeConnections();
+	%>
+</body>
+
+</html>
