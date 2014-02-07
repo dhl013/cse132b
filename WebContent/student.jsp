@@ -54,9 +54,28 @@
 		pstmt.setString(7, request.getParameter("RESIDENCY").toLowerCase());
 		pstmt.setString(8, request.getParameter("PID") );
 		
+		boolean success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed PreparedStatement with a success of : " + success);
+		
 
 	}
 %>
+<!-- STUDENT DELETE CODE -->
+<%
+	if( null != action && action.equals("delete") ){
+		String student_delete = "DELETE FROM Student " +
+								"WHERE PID=?;";
+		
+		pstmt = db.getPreparedStatment(student_delete);
+		
+		pstmt.setString(1, request.getParameter("PID"));
+		
+		boolean success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed PreparedStatement with a success of : " + success);
+		
+	}
+%>
+
 <!-- Query Code --- MUST BE AFTER INSERT/UPDATE/DELETE SECTIONS -->
 <%
 	String query = "SELECT * FROM Student";
@@ -117,7 +136,7 @@
 						<tr>
 							<form id="update_student" action="student.jsp" method="post">
 								<input type="hidden" value="update" name="action">
-								<td><span id="pid"><%= rs.getString("PID") %></span></td>
+								<td><input value="<%= rs.getString("PID") %>" name="PID" readonly="true" size="10"></td>
 								<td><input value="<%= rs.getString("SSN") %>" name="SSN" size="10"></td>
 								<td><input value="<%= rs.getString("FirstName") %>" name="FIRSTNAME" size="15"></td>
 								<td><input value="<%= rs.getString("MiddleName") %>" name="MIDDLENAME" size="15"></td>
@@ -132,11 +151,11 @@
 									<option value="FOREIGN" <% if(rs.getString("Residency").equals("foreign")) out.println("selected"); %> >Foreign Resident</option>
 									</select></td>
 								<td><input type="submit" value="Update"></td>
-								<form id="delete_student" action="student.jsp" method="post">
-									<input type="hidden" value="delete" name="action">
-									<input type="hidden" value="<%= rs.getString("PID") %>" name="SSN">
-									<td><input type="submit" value="Delete"></td>
-								</form>
+							</form>
+							<form id="delete_student" action="student.jsp" method="post">
+								<input type="hidden" value="delete" name="action">
+								<input type="hidden" value="<%= rs.getString("PID") %>" name="PID">
+								<td><input type="submit" value="Delete"></td>
 							</form>
 				<%
 					}
