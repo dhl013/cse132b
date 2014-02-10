@@ -11,6 +11,9 @@
 
 <body>
 <h1>CSE 132B Project Page</h1>
-<h2><a href='student.jsp'>Go to Student Insert-Update-Delete Page</a></h2>
+<h2><a href='student.jsp'>Go to Student Page</a></h2>
+<h2><a href='faculty.jsp'>Go to Faculty Page</a></h2>
+<h2><a href='course.jsp'>Go to Course Page</a></h2>
+<h2><a href='class.jsp'>Go to Class Page</a></h2>
 </body>
 </html>

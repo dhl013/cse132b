@@ -31,7 +31,7 @@
 		pstmt.setString(7, request.getParameter("RESIDENCY").toLowerCase());
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed PreparedStatement with a success of : " + success);
+		System.out.println("Executed Student Insert PreparedStatement with a success of : " + success);
 
 	}
 %>
@@ -55,7 +55,7 @@
 		pstmt.setString(8, request.getParameter("PID") );
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed PreparedStatement with a success of : " + success);
+		System.out.println("Executed Student Update PreparedStatement with a success of : " + success);
 		
 
 	}
@@ -71,7 +71,7 @@
 		pstmt.setString(1, request.getParameter("PID"));
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed PreparedStatement with a success of : " + success);
+		System.out.println("Executed Student Delete PreparedStatement with a success of : " + success);
 		
 	}
 %>

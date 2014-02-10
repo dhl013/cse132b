@@ -5,7 +5,7 @@
 <head>
 <link rel="stylesheet" type="test/css" href="css/student.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Student Modification Page</title>
+<title>Faculty Modification Page</title>
 </head>
 <%@ page language="java" import="cse132b.DBConn" %>
 <%@ page import="java.sql.*" %>
@@ -18,16 +18,27 @@
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String faculty_insert = "INSERT INTO Faculty VALUES (?,?,?)";
+		String faculty_insert = "INSERT INTO Faculty VALUES (?,?)";
+		String fac = request.getParameter("FACULTY_NAME");
 		
 		pstmt = db.getPreparedStatment(faculty_insert);
 		
-		pstmt.setString(1, request.getParameter("FACULTY_NAME") );
+		pstmt.setString(1, fac);
 		pstmt.setString(2, request.getParameter("POSITION"));
-		pstmt.setString(3, request.getParameter("DEPARTMENT"));
+
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed PreparedStatement with a success of : " + success);
+		
+		String fac_dept = "INSERT INTO Faculty_Department VALUES (?,?)";
+		pstmt = db.getPreparedStatment(fac_dept);
+		String[] belong_depts = request.getParameter("DEPARTMENTS").split(",");
+		for(String depart : belong_depts){
+			pstmt.setString(1, fac);
+			pstmt.setString(2, depart);
+			success = db.executePreparedStatement(pstmt);
+			System.out.println("Executed PreparedStatment for Faculty_Department with a success of : " + success);
+		}
 	}
 %>
 <!-- FACULTY UPDATE CODE -->
@@ -35,15 +46,14 @@
 	if( null != action && action.equals("update") ){
 
 		String faculty_update = "UPDATE Faculty SET faculty_name = ?, " +
-								"position = ?, dept_title = ? " +
+								"position = ?" +
 								"WHERE faculty_name = ?";
 		
 		pstmt = db.getPreparedStatment(faculty_update);
 		
 		pstmt.setString(1, request.getParameter("FACULTY_NAME") );
 		pstmt.setString(2, request.getParameter("POSITION") );
-		pstmt.setString(3, request.getParameter("DEPARTMENT") );
-		pstmt.setString(4, request.getParameter("FACULTY_NAME") );
+		pstmt.setString(3, request.getParameter("FACULTY_NAME") );
 
 		
 		boolean success = db.executePreparedStatement(pstmt);
@@ -52,23 +62,27 @@
 	
 	}
 %>
+<!-- FACULTY DELETE CODE -->
+<%
+	if( null != action && action.equals("delete") ){
+		String faculty_delete = "DELETE FROM Faculty " +
+								"WHERE faculty_name=?;";
+		
+		pstmt = db.getPreparedStatment(faculty_delete);
+		
+		pstmt.setString(1, request.getParameter("FACULTY_NAME"));
+		
+		boolean success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed PreparedStatement with a success of : " + success);
+		
+	}
+%>
 <!-- PAGE INITALIZATION CODE -->
 <%
-	String query = "SELECT * FROM Department";
+	String depts;
+	String query = "SELECT * FROM Faculty";
 	db.executeQuery(query);
 	ResultSet rs = db.getResultSet();
-	
-	String dept_options = "";
-	String dept;
-	
-	while( rs.next() ){
-		dept = rs.getString("dept_title");
-		dept_options += "<option value=\"" + dept + "\">" + dept + "</option>\n";
-	}
-	
-	query = "SELECT * FROM Faculty";
-	db.executeQuery(query);
-	rs = db.getResultSet();
 %>
 <body>
 	<div id="banner">
@@ -88,7 +102,7 @@
 				<tr>
 					<th>Faculty Name</th>
 					<th>Position</th>
-					<th>Department</th>
+					<th>Departments</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -97,9 +111,7 @@
 						<input type="hidden" value="insert" name="action">
 						<th><input value="" name="FACULTY_NAME" size="30"></th>
 						<th><input value="" name="POSITION" size="20"></th>
-						<th><select name="DEPARTMENT" form="insert_faculty">
-							<%= dept_options %>
-							</select></th>
+						<th><input value="" name="DEPARTMENTS" size="60"></th>
 						<th><input type="submit" value="Insert"></th>
 					</form>
 				</tr>
@@ -111,37 +123,25 @@
 							<input type="hidden" value="update" name="action">
 							<td><input value="<%= rs.getString("faculty_name") %>" name="FACULTY_NAME" size="30"></td>
 							<td><input value="<%= rs.getString("position") %>" name="POSITION" size="20"></td>
-							<td><select name="DEPARTMENT" form="update_faculty">
-								<%
-									//Get the selected department
-									String lines[] = dept_options.split("\\r?\\n");
-									String line;
-									dept = rs.getString("dept_title");
-									
-									for( int i = 0 ; i < lines.length ; i++ ){
-										if(lines[i].contains(dept)){
-											line = lines[i];
-											int index = line.indexOf(">");
-											String beg = line.substring(0, index);
-											String end = line.substring(index);
-											lines[i] = beg + " selected " + end;
-										}
-									}
-									
-									StringBuilder builder = new StringBuilder();
-									for(String s : lines){
-										builder.append(s);
-									}
-									line = builder.toString();
-								%>
-								<%= line %>
-								</select>
-								<td><input type="submit" value="Update"></td>
+							<%
+								Statement stmt = db.getStatement();
+								query = "SELECT * FROM Faculty_Department WHERE faculty_name='" + rs.getString("faculty_name") +"'";  
+								ResultSet fdrs = stmt.executeQuery(query);
+								StringBuilder builder = new StringBuilder();
+								while( fdrs.next() ){
+									builder.append(fdrs.getString("dept_title"));
+									builder.append(",");
+								}
+								depts = builder.toString();
+								
+							%>
+							<td><input value="<%= depts.substring(0, depts.length() -1 ) %>" name="DEPARTMENTS" size="60"></td>
+							<td><input type="submit" value="Update" disabled></td>
 						</form>
 						<form id="delete_faculty" action="faculty.jsp" method="post">
 							<input type="hidden" value="delete" name="action">
 							<input type="hidden" value="<%= rs.getString("faculty_name") %>" name="FACULTY_NAME">
-							<td><input type="submit" value="Delete"></td>
+							<td><input type="submit" value="Delete" disabled></td>
 						</form>
 					</tr>
 				<%

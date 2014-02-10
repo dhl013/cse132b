@@ -99,5 +99,14 @@ public class DBConn {
 	public ResultSet getResultSet(){
 		return this.rs;
 	}
+	
+	public Statement getStatement(){
+		try {
+			return this.conn.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }
