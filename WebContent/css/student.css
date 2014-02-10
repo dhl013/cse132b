@@ -2,8 +2,9 @@ html, body, div {
 	background-color: #f5f5f5;
 	width : 100%;
 }
-div#student-table{
+div#form-table{
 	padding-top:50px;
+	float : left;
 }
 table {
 	width : 100 %;

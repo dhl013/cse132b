@@ -88,6 +88,7 @@
 	<div id="banner">
 		<div id="banner-content">
 			<span id="banner-text">Links to other Forms: </span>
+			<a href="index.jsp" id="banner-link">Home</a>
 			<a href="class.jsp" id="banner-link">Class</a>
 			<a href="course.jsp "id="banner-link">Course</a>
 			<a href="faculty.jsp" id="banner-link">Faculty</a>
@@ -96,7 +97,7 @@
 			
 		</div>
 	</div>
-	<div id="student-table" style="float:left">
+	<div id="form-table" style="float:left">
 		<table>
 			<thead>
 				<tr>
