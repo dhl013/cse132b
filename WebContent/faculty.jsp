@@ -87,7 +87,6 @@
 <body>
 	<div id="banner">
 		<div id="banner-content">
-			<span id="banner-text">Links to other Forms: </span>
 			<a href="index.jsp" id="banner-link">Home</a>
 			<a href="class.jsp" id="banner-link">Class</a>
 			<a href="course.jsp "id="banner-link">Course</a>

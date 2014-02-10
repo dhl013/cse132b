@@ -5,7 +5,7 @@
 <head>
 <link rel="stylesheet" type="test/css" href="css/student.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Faculty Modification Page</title>
+<title>Course Modification Page</title>
 </head>
 <%@ page language="java" import="cse132b.DBConn" %>
 <%@ page import="java.sql.*" %>
@@ -20,7 +20,7 @@
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
 		String course_insert = "INSERT INTO Course VALUES (?,?,?)";
-		String cnum = request.getParameter("COURSE_NUMBER;");
+		String cnum = request.getParameter("COURSE_NUMBER");
 		
 		pstmt = db.getPreparedStatment(course_insert);
 		
@@ -31,27 +31,29 @@
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Course Insert PreparedStatement with a success of : " + success);
 		
-		String prereq_insert = "INSERT INTO Prerequisite VALUES (?,?)";
-		pstmt = db.getPreparedStatment(prereq_insert);
-		String[] prereqs = request.getParameter("PREREQ").split(",");
-		for( String p : prereqs ){
-			pstmt.setString(1, cnum);
-			pstmt.setString(2, p);
-			success = db.executePreparedStatement(pstmt);
-			System.out.println("Executed Course Insert -- Prerequisite PreparedStatement with a success of : " + success);
+		if( !request.getParameter("PREREQ").equals("") ) {
+			String prereq_insert = "INSERT INTO Prerequisite VALUES (?,?)";
+			pstmt = db.getPreparedStatment(prereq_insert);
+			String[] prereqs = request.getParameter("PREREQ").split(",");
+			for( String p : prereqs ){
+				pstmt.setString(1, cnum);
+				pstmt.setString(2, p);
+				success = db.executePreparedStatement(pstmt);
+				System.out.println("Executed Course Insert -- Prerequisite PreparedStatement with a success of : " + success);
+			}
 		}
+		if( ! request.getParameter("PREV_NUM").equals("") ) {
+			String prev_num_insert = "INSERT INTO Previous_course_number VALUES (?,?)";
+			pstmt = db.getPreparedStatment(prev_num_insert);
+			String[] prev_nums = request.getParameter("PREV_NUM").split(",");
+			for( String p : prev_nums ){
+				pstmt.setString(1, cnum);
+				pstmt.setString(2, p);
+				success = db.executePreparedStatement(pstmt);
+				System.out.println("Executed Course Insert -- Previous Course Number PreparedStatement with a success of : " + success);
+			}
 		
-		String prev_num_insert = "INSERT INTO Previous_course_number VALUES (?,?)";
-		pstmt = db.getPreparedStatment(prev_num_insert);
-		String[] prev_nums = request.getParameter("PREV_NUM").split(",");
-		for( String p : prev_nums ){
-			pstmt.setString(1, cnum);
-			pstmt.setString(2, p);
-			success = db.executePreparedStatement(pstmt);
-			System.out.println("Executed Course Insert -- Previous Course Number PreparedStatement with a success of : " + success);
 		}
-		
-		
 	}
 %>
 <!-- COURSE INITALIZATION CODE -->
@@ -64,7 +66,6 @@
 <body>
 	<div id="banner">
 		<div id="banner-content">
-			<span id="banner-text">Links to other Forms: </span>
 			<a href="index.jsp" id="banner-link">Home</a>
 			<a href="class.jsp" id="banner-link">Class</a>
 			<a href="course.jsp "id="banner-link">Course</a>
