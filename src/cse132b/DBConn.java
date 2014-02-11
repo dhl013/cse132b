@@ -18,7 +18,8 @@ public class DBConn {
 	public DBConn(){
 		//Create a variable for the connection string.
 		this.connectionUrl = "jdbc:sqlserver://localhost:1433;" +
-		   "databaseName=CSE132B; username=sa; password=cse132b";
+		   "databaseName=CSE132B; integratedSecurity=true;";		//Daniel: integratedSecurity=true;
+																		//Kalvin: username=sa; password=cse132b
 
 		// Declare the JDBC objects.
 		this.conn = null;
