@@ -38,7 +38,7 @@
 <!-- STUDENT UPDATE CODE -->
 <%
 	if( null != action && action.equals("update") ){
-		String student_update = "UPDATE Students SET PID = ?, SSN = ?, " +
+		String student_update = "UPDATE Student SET PID = ?, SSN = ?, " +
 								"FirstName = ?, MiddleName = ?, LastName = ?, " +
 								"Enrolled = ?, Residency = ? " +
 								"WHERE PID = ?";
@@ -63,7 +63,7 @@
 <!-- STUDENT DELETE CODE -->
 <%
 	if( null != action && action.equals("delete") ){
-		String student_delete = "DELETE FROM Students " +
+		String student_delete = "DELETE FROM Student " +
 								"WHERE PID=?;";
 		
 		pstmt = db.getPreparedStatment(student_delete);
@@ -78,7 +78,7 @@
 
 <!-- Query Code --- MUST BE AFTER INSERT/UPDATE/DELETE SECTIONS -->
 <%
-	String query = "SELECT * FROM Students";
+	String query = "SELECT * FROM Student";
 	db.executeQuery(query);
 	
 	ResultSet rs = db.getResultSet();
