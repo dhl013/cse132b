@@ -39,7 +39,7 @@
 <%
 	if( null != action && action.equals("update") ){
 		String student_update = "UPDATE Student SET PID = ?, SSN = ?, " +
-								"FirstName = ?, MiddleName = ?, LastName = ?, " +
+								"first_name = ?, middle_name = ?, last_name = ?, " +
 								"Enrolled = ?, Residency = ? " +
 								"WHERE PID = ?";
 		
@@ -138,9 +138,9 @@
 								<input type="hidden" value="update" name="action">
 								<td><input value="<%= rs.getString("PID") %>" name="PID" readonly="true" size="10"></td>
 								<td><input value="<%= rs.getString("SSN") %>" name="SSN" size="10"></td>
-								<td><input value="<%= rs.getString("FirstName") %>" name="FIRSTNAME" size="15"></td>
-								<td><input value="<%= rs.getString("MiddleName") %>" name="MIDDLENAME" size="15"></td>
-								<td><input value="<%= rs.getString("LastName") %>" name="LASTNAME" size="15"></td>
+								<td><input value="<%= rs.getString("first_name") %>" name="FIRSTNAME" size="15"></td>
+								<td><input value="<%= rs.getString("middle_name") %>" name="MIDDLENAME" size="15"></td>
+								<td><input value="<%= rs.getString("last_name") %>" name="LASTNAME" size="15"></td>
 								<td><select name="ENROLLED" form="update_student">
 									<option value="true" <% if(rs.getBoolean("Enrolled")) out.println("selected"); %> >True</option>
 									<option value="false" <% if(!rs.getBoolean("Enrolled")) out.println("selected"); %> >False</option>
