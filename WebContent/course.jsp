@@ -90,12 +90,12 @@
 						<input type="hidden" value="insert" name="action">
 						<td><input value="" name="COURSE_NUMBER" size="15"></td>
 						<td><select name="HAS_LAB" form="insert_course" style="float : right">
-								<option value="true">True</option>
 								<option value="false">False</option>
+								<option value="true">True</option>
 							</select></td>	
 						<td><select name="NEEDS_CONSENT" form="insert_course" style="float : right">
-							<option value="true">True</option>
 							<option value="false">False</option>
+							<option value="true">True</option>
 						</select></td>
 						<td><input value="" name="PREREQ" size="25"></td>
 						<td><input value="" name="PREV_NUM" size="25"></td>

@@ -23,7 +23,7 @@
 		pstmt = db.getPreparedStatment(quarter_year_insert);
 		
 		pstmt.setString(1, request.getParameter("Q_ID") );
-		pstmt.setString(2, request.getParameter("QUARTER").toLowerCase());
+		pstmt.setString(2, request.getParameter("QUARTER"));
 		pstmt.setInt(3, Integer.parseInt(request.getParameter("YEAR")) );
 		
 		boolean success = db.executePreparedStatement(pstmt);
@@ -107,10 +107,11 @@
 						<input type="hidden" value="insert" name="action">
 						<th><input value="" name="Q_ID" size="10"></th>
 						<th><select name="QUARTER" form="insert_quarter_year">
-								<option value="sp">Spring</option>
-								<option value="su">Summer</option>
-								<option value="fa">Fall</option>
-								<option value="wi">Winter</option>
+								<option value="SP">Spring</option>
+								<option value="SU1">Summer I</option>
+								<option value="SU2">Summer II</option>
+								<option value="FA">Fall</option>
+								<option value="WI">Winter</option>
 							</select></th>
 						<th><input value="" name="YEAR" size="15"></th>
 						<th><input type="submit" value="Insert"></th>
@@ -125,10 +126,11 @@
 								<td><input value="<%= rs.getString("Q_ID") %>" name="Q_ID" size="10"></td>
 								
 								<td><select name="QUARTER" form="update_qurater_year">
-									<option value="SP" <% if(rs.getString("Quarter").equals("sp")) out.println("selected"); %> >Spring</option>
-									<option value="SU" <% if(rs.getString("Quarter").equals("su")) out.println("selected"); %> >Summer</option>
-									<option value="FA" <% if(rs.getString("Quarter").equals("fa")) out.println("selected"); %> >Fall</option>
-									<option value="WI" <% if(rs.getString("Quarter").equals("wi")) out.println("selected"); %> >Winter</option>
+									<option value="SP" <% if(rs.getString("Quarter").equals("SP")) out.println("selected"); %> >Spring</option>
+									<option value="SU" <% if(rs.getString("Quarter").equals("SU1")) out.println("selected"); %> >Summer</option>
+									<option value="SU" <% if(rs.getString("Quarter").equals("SU2")) out.println("selected"); %> >Summer</option>
+									<option value="FA" <% if(rs.getString("Quarter").equals("FA")) out.println("selected"); %> >Fall</option>
+									<option value="WI" <% if(rs.getString("Quarter").equals("WI")) out.println("selected"); %> >Winter</option>
 									</select></td>
 								<td><input value="<%= rs.getString("YEAR") %>" name="YEAR" size="15"></td>
 								<td><input type="submit" value="Update"></td>
