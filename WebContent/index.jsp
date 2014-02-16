@@ -18,5 +18,6 @@
 <h2><a href='location.jsp'>Go to Location Page</a></h2>
 <h2><a href='probation'>Go to Probation Page</a></h2>
 <h2><a href='thesis_committe.jsp'>Go to Thesis Committe Page</a></h2>
+<h2><a href='time_entry.jsp'>Go to Time Entry Page</a></h2>
 </body>
 </html>
