@@ -9,4 +9,22 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>CourseServlet</servlet-name>
+    <servlet-class>cse132b.CourseServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CourseServlet</servlet-name>
+    <url-pattern>/getSections</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Course_section</display-name>
+    <servlet-name>Course_section</servlet-name>
+    <servlet-class>com.cse132bServlets.Course_section</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Course_section</servlet-name>
+    <url-pattern>/Course_section</url-pattern>
+  </servlet-mapping>
 </web-app>

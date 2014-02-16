@@ -38,7 +38,7 @@
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Section Insert PreparedStatement with a success of : " + success);
 		
-		String weekly_meeting_insert = "INSERT INTO Weekly_Meetings VALUES (?,?,?,?,?)";
+		String weekly_meeting_insert = "INSERT INTO Weekly_Meeting VALUES (?,?,?,?,?)";
 		pstmt = db.getPreparedStatment(weekly_meeting_insert);
 		pstmt.setString(1, request.getParameter("COURSE"));
 		pstmt.setString(2, request.getParameter("CLASS_TITLE"));
@@ -50,7 +50,7 @@
 		System.out.println("Executed Weekly Meeting Insert PreparedStatement with a success of : " + success);
 		
 		String[] insert_days = request.getParameter("DAY").split("(?=\\p{Upper})");
-		String insert_meetings = "INSERT INTO Meetings_Day VALUES (?,?,?)";
+		String insert_meetings = "INSERT INTO Meeting_Day VALUES (?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meetings);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
 		pstmt.setString(2, request.getParameter("W_ID"));
@@ -60,7 +60,7 @@
 			System.out.println("Executed Meetings_Day Insert PreparedStatement with a success of : " + success + "For day: " + d);
 		}
 		
-		String insert_meet_loc = "INSERT INTO Meetings_Location VALUES (?,?,?)";
+		String insert_meet_loc = "INSERT INTO Meeting_Location VALUES (?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meet_loc);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
 		pstmt.setString(2, request.getParameter("W_ID"));
@@ -70,7 +70,7 @@
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Meetings Location Insert PreparedStatement with a success of : " + success);
 		
-		String insert_meet_time = "INSERT INTO Meetings_Time VALUES (?,?,?)";
+		String insert_meet_time = "INSERT INTO Meeting_Time VALUES (?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meet_time);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
 		pstmt.setString(2, request.getParameter("W_ID"));
@@ -80,6 +80,7 @@
 		System.out.println("Executed Meetings Time Insert PreparedStatement with a success of : " + success);
 		
 		String insert_offered = "INSERT INTO Class_offered VALUES (?,?,?)";
+		pstmt = db.getPreparedStatment(insert_offered);
 		pstmt.setString(1, request.getParameter("COURSE"));
 		pstmt.setString(2, request.getParameter("CLASS_TITLE"));
 		pstmt.setString(3, request.getParameter("QUARTER"));
@@ -95,6 +96,7 @@
 	String time_select = "<select name=\"TIME\"form=\"insert_class\">";
 	String quarter_select = "<select name=\"QUARTER\" form=\"insert_class\">";
 	String[] days = {"M","Tu","W","Th","F","MWF","TuTh", "MW"};
+	String[] days_keys = {"Monday", "Tuesday", "Wednesday","Thursday","Friday","MondayWednesdayFriday","TuesdayThursday","MondayWednesday"};
 	String query = "SELECT * FROM Course";
 	db.executeQuery(query);
 	ResultSet rs = db.getResultSet();
@@ -104,8 +106,10 @@
 	}
 	course_select += "</select>";
 	
+	int i = 0;
 	for(String day : days){
-		meeting_day_select += "<option value=\"" + day + "\">" + day + "</option>";	
+		meeting_day_select += "<option value=\"" + days_keys[i] + "\">" + day + "</option>";
+		i++;
 	}
 	meeting_day_select += "</select>";
 	
