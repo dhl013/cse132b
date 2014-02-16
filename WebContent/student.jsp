@@ -40,7 +40,7 @@
 	if( null != action && action.equals("update") ){
 		String student_update = "UPDATE Student SET PID = ?, SSN = ?, " +
 								"first_name = ?, middle_name = ?, last_name = ?, " +
-								"Enrolled = ?, Residency = ? " +
+								"enrolled = ?, residency = ? " +
 								"WHERE PID = ?";
 		
 		pstmt = db.getPreparedStatment(student_update);
@@ -142,13 +142,13 @@
 								<td><input value="<%= rs.getString("middle_name") %>" name="MIDDLENAME" size="15"></td>
 								<td><input value="<%= rs.getString("last_name") %>" name="LASTNAME" size="15"></td>
 								<td><select name="ENROLLED" form="update_student">
-									<option value="true" <% if(rs.getBoolean("Enrolled")) out.println("selected"); %> >True</option>
-									<option value="false" <% if(!rs.getBoolean("Enrolled")) out.println("selected"); %> >False</option>
+									<option value="true" <% if(rs.getBoolean("enrolled")) out.println("selected"); %> >True</option>
+									<option value="false" <% if(!rs.getBoolean("enrolled")) out.println("selected"); %> >False</option>
 									</select></td>
 								<td><select name="RESIDENCY" form="update_student">
-									<option value="CA" <% if(rs.getString("Residency").equals("ca")) out.println("selected"); %> >California Resident</option>
-									<option value="NONCA" <% if(rs.getString("Residency").equals("nonca")) out.println("selected"); %> >Non-California Resident</option>
-									<option value="FOREIGN" <% if(rs.getString("Residency").equals("foreign")) out.println("selected"); %> >Foreign Resident</option>
+									<option value="CA" <% if(rs.getString("residency").equals("ca")) out.println("selected"); %> >California Resident</option>
+									<option value="NONCA" <% if(rs.getString("residency").equals("nonca")) out.println("selected"); %> >Non-California Resident</option>
+									<option value="FOREIGN" <% if(rs.getString("residency").equals("foreign")) out.println("selected"); %> >Foreign Resident</option>
 									</select></td>
 								<td><input type="submit" value="Update"></td>
 							</form>
