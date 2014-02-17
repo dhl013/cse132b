@@ -27,4 +27,14 @@
     <servlet-name>Course_section</servlet-name>
     <url-pattern>/Course_section</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Past_Classes</display-name>
+    <servlet-name>Past_Classes</servlet-name>
+    <servlet-class>com.cse132bServlets.Past_Classes</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Past_Classes</servlet-name>
+    <url-pattern>/Past_Classes</url-pattern>
+  </servlet-mapping>
 </web-app>

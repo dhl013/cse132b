@@ -18,14 +18,25 @@
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String class_insert = "INSERT INTO Class VALUES (?,?)";
-		
-		pstmt = db.getPreparedStatment(class_insert);
-		pstmt.setString(1, request.getParameter("COURSE"));
-		pstmt.setString(2, request.getParameter("CLASS_TITLE"));
-		
-		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed Class Insert PreparedStatement with a success of : " + success);
+		boolean success;
+		//Check if class already exists before inserting into
+		String class_check = "SELECT * FROM Class c WHERE c.course_number = '" + request.getParameter("COURSE") + "'";
+		db.executeQuery(class_check);
+		ResultSet tmprs = db.getResultSet();
+		boolean insert_class = true;
+		while( tmprs.next() ){
+			insert_class = false;
+		}
+		if(insert_class) {
+			String class_insert = "INSERT INTO Class VALUES (?,?)";
+			
+			pstmt = db.getPreparedStatment(class_insert);
+			pstmt.setString(1, request.getParameter("COURSE"));
+			pstmt.setString(2, request.getParameter("CLASS_TITLE"));
+			
+			success = db.executePreparedStatement(pstmt);
+			System.out.println("Executed Class Insert PreparedStatement with a success of : " + success);
+		}
 		
 		String section_insert = "INSERT INTO Section VALUES (?,?,?,?,?)";
 		pstmt = db.getPreparedStatment(section_insert);
@@ -77,14 +88,16 @@
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Meetings Time Insert PreparedStatement with a success of : " + success);
 		
-		String insert_offered = "INSERT INTO Class_offered VALUES (?,?,?)";
-		pstmt = db.getPreparedStatment(insert_offered);
-		pstmt.setString(1, request.getParameter("COURSE"));
-		pstmt.setString(2, request.getParameter("CLASS_TITLE"));
-		pstmt.setString(3, request.getParameter("QUARTER"));
-		
-		success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed Class_offered Insert PreparedStatement with a success of : " + success);
+		if(insert_class) {
+			String insert_offered = "INSERT INTO Class_offered VALUES (?,?,?)";
+			pstmt = db.getPreparedStatment(insert_offered);
+			pstmt.setString(1, request.getParameter("COURSE"));
+			pstmt.setString(2, request.getParameter("CLASS_TITLE"));
+			pstmt.setString(3, request.getParameter("QUARTER"));
+			
+			success = db.executePreparedStatement(pstmt);
+			System.out.println("Executed Class_offered Insert PreparedStatement with a success of : " + success);
+		}
 	}
 %>
 <!-- CLASS INITALIZTION -->
@@ -130,7 +143,18 @@
 			
 	quarter_select += "</select>";
 	
-	query = "SELECT * FROM Class";
+	query = "SELECT s.*, w.w_id, w.w_type, md.day, ml.loc_id, t.starting_time, t.duration, co.q_id " +
+			"FROM Class c, Section s, Weekly_Meeting w, Meeting_Day md, Meeting_Location ml, Meeting_Time mt, Time_Table t, Class_offered co " +
+			"WHERE c.course_number = s.course_number " +
+			"AND   w.course_number = s.course_number " +
+			"AND   md.section_id = s.section_id " +
+			"AND   md.w_id = w.w_id " +
+			"AND   ml.section_id = s.section_id " +
+			"AND   ml.w_id = w.w_id " +
+			"AND   mt.section_id = s.section_id " +
+			"AND   mt.w_id = w.w_id " +
+			"AND   mt.t_id = t.t_id " +
+			"AND   c.course_number = co.course_number";
 	db.executeQuery(query);
 	rs = db.getResultSet();
 	
@@ -165,8 +189,8 @@
 					<form id="insert_class" action="class.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
 						<td><%= course_select %></td>
-						<td><input value="" name="CLASS_TITLE" size="20"></td>
-						<td><input value="" name="SECTION_ID" size="7"></td>
+						<td><input value="" name="CLASS_TITLE" size="25"></td>
+						<td><input value="" name="SECTION_ID" size="6"></td>
 						<td><select name="DISC_MAN" form="insert_class" style="float : right">
 								<option value="false">False</option>
 								<option value="true">True</option>
@@ -175,7 +199,7 @@
 						<td><input value="" name="W_ID" size="5"></td>
 						<td><%= meeting_day_select %></td>
 						<td><%= time_select %></td>
-						<td><input value="" name="LOCATION" size="15"></td>
+						<td><input value="" name="LOCATION" size="6"></td>
 						<td><select name="TYPE" form="insert_class" style="float : right">
 								<option value="LE">Lecture</option>
 								<option value="DI">Discussion</option>
@@ -184,6 +208,31 @@
 						<td><%= quarter_select %></td>
 						<td><input type="submit" value="Insert"></td>
 					</form>
+				</tr>
+				<%
+					while( rs.next() ) {
+				%>
+					<tr>
+						<form id="update_class" action="class.jsp" method="post">
+							<input type="hidden" value="update" name="action">
+							<td><input value="<%= rs.getString("course_number") %>" name="COURSE" size="6"></td>
+							<td><input value="<%= rs.getString("class_title") %>" name="CLASS_TITLE" size="25"></td>
+							<td><input value="<%= rs.getString("section_id") %>" name="SECTION_ID" size="6"></td>
+							<td><select name="DISC_MAN" form="update_class">
+									<option value="true" <% if(rs.getBoolean("discussion_mandatory")) out.println("selected"); %> >True</option>
+									<option value="false" <% if(!rs.getBoolean("discussion_mandatory")) out.println("selected"); %> >False</option>
+									</select></td>
+							<td><input value="<%= rs.getInt("enrollment_limit") %>" name="ENROLL_LIM" size="3"></td>
+							<td><input value="<%= rs.getString("w_id") %>" name="W_ID" size="5"></td>
+							<td><input value="<%= rs.getString("day") %>" name="DAY" size="10"></td>
+							<td><input value="<%= rs.getString("starting_time") +" -- "+ Integer.toString(rs.getInt("duration")) +" min" %>" name="TIME" size="15"></td>
+							<td><input value="<%= rs.getString("loc_id") %>" name="LOCATION" size="6"></td>
+							<td><input value="<%= rs.getString("w_type") %>" name="TYPE" size="10"></td>
+							<td><input value="<%= rs.getString("q_id")%>" name="QUARTER" size="5"></td> 
+					</tr>
+				<%
+					}
+				%>
 			</tbody>
 			
 		</table>

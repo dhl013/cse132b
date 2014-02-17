@@ -24,5 +24,7 @@
 <h2><a href='student.jsp'>Student Page</a></h2>
 <h2><a href='time_entry.jsp'>Time Page</a></h2>
 <h2><a href='thesis_committee.jsp'>Thesis Committee Page</a></h2>
+<h2><a href='course_enrollment.jsp'>Course Enrollment Page</a></h2>
+<h2><a href='past_classes.jsp'>Classes taken in the Past Page</a></h2>
 </body>
 </html>
