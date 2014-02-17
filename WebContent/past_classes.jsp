@@ -148,7 +148,7 @@
 			});
 			$('#section_select').on('change', function(){
 				$('#quarter_select').val($(this).val());
-				$('#quarter_id').val($('#quarter_select option:selected').text());	
+				$('#quarter_id').val($('#quarter_select').children(':selected').text());	
 				
 			});
 		});

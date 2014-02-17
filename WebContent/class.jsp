@@ -38,16 +38,26 @@
 			System.out.println("Executed Class Insert PreparedStatement with a success of : " + success);
 		}
 		
-		String section_insert = "INSERT INTO Section VALUES (?,?,?,?,?)";
-		pstmt = db.getPreparedStatment(section_insert);
-		pstmt.setString(1, request.getParameter("COURSE"));
-		pstmt.setString(2, request.getParameter("CLASS_TITLE"));
-		pstmt.setString(3, request.getParameter("SECTION_ID"));
-		pstmt.setBoolean(4, request.getParameter("DISC_MAN").equals("true") ? true : false );
-		pstmt.setString(5, request.getParameter("ENROLL_LIM"));
+		String section_check = "SELECT * FROM Section s WHERE s.section_id = '" + request.getParameter("SECTION_ID") + "'";
+		db.executeQuery(section_check);
+		tmprs = db.getResultSet();
+		boolean insert_section = true;
+		while( tmprs.next() ){
+			insert_section = false;
+		}
 		
-		success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed Section Insert PreparedStatement with a success of : " + success);
+		if(insert_section){
+			String section_insert = "INSERT INTO Section VALUES (?,?,?,?,?)";
+			pstmt = db.getPreparedStatment(section_insert);
+			pstmt.setString(1, request.getParameter("COURSE"));
+			pstmt.setString(2, request.getParameter("CLASS_TITLE"));
+			pstmt.setString(3, request.getParameter("SECTION_ID"));
+			pstmt.setBoolean(4, request.getParameter("DISC_MAN").equals("true") ? true : false );
+			pstmt.setString(5, request.getParameter("ENROLL_LIM"));
+			
+			success = db.executePreparedStatement(pstmt);
+			System.out.println("Executed Section Insert PreparedStatement with a success of : " + success);
+		}
 		
 		String weekly_meeting_insert = "INSERT INTO Weekly_Meeting VALUES (?,?,?,?,?)";
 		pstmt = db.getPreparedStatment(weekly_meeting_insert);
