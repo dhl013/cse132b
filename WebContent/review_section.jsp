@@ -115,7 +115,7 @@
 					<form id="insert_review_section" action="review_section.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
 						<th><input value="" name="COURSE_NUMBER" size="10"></th>
-						<th><input value="" name="CLASS_TITLE" size="10"></th>
+						<th><input value="" name="CLASS_TITLE" size="25"></th>
 						<th><input value="" name="SECTION_ID" size="10"></th>
 						<th><input value="" name="DATE" size="15" placeholder="YYYY-MM-DD"></th>
 						<th><input value="" name="LOC_ID" size="10"></th>
@@ -130,7 +130,7 @@
 							<form id="update_review_section" action="review_section.jsp" method="post">
 								<input type="hidden" value="update" name="action">
 								<td><input value="<%= rs.getString("course_number") %>" name="COURSE_NUMBER" size="10"></td>
-								<td><input value="<%= rs.getString("class_title") %>" name="CLASS_TITLE" size="10"></td>
+								<td><input value="<%= rs.getString("class_title") %>" name="CLASS_TITLE" size="25"></td>
 								<td><input value="<%= rs.getString("section_ID") %>" name="SECTION_ID" size="10"></td>
 								<td><input value="<%= rs.getDate("date") %>" name="DATE" size="15"></td>
 								<td><input value="<%= rs.getString("loc_ID") %>" name="LOC_ID" size="10"></td>

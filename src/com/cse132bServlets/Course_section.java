@@ -45,7 +45,9 @@ public class Course_section extends HttpServlet {
 						   "AND   s.section_id = mt.section_id " +
 						   "AND   mt.t_id = t.t_id "+
 						   "AND   wk.section_id = s.section_id " +
-						   "AND   md.section_id = s.section_id ";
+						   "AND   md.section_id = s.section_id " +
+						   "AND   md.w_id = wk.w_id " +
+						   "AND	  mt.w_id = wk.w_id ";
 			
 			db.executeQuery(query);
 			ResultSet rs = db.getResultSet();

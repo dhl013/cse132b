@@ -225,7 +225,7 @@
 					<tr>
 						<form id="update_class" action="class.jsp" method="post">
 							<input type="hidden" value="update" name="action">
-							<td><input value="<%= rs.getString("course_number") %>" name="COURSE" size="6"></td>
+							<td><input value="<%= rs.getString("course_number") %>" name="COURSE" size="8"></td>
 							<td><input value="<%= rs.getString("class_title") %>" name="CLASS_TITLE" size="25"></td>
 							<td><input value="<%= rs.getString("section_id") %>" name="SECTION_ID" size="6"></td>
 							<td><select name="DISC_MAN" form="update_class">
