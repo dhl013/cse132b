@@ -95,8 +95,8 @@
 					<form id="insert_location" action="location.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
 						<th><input value="" name="LOC_ID" size="10"></th>
-						<th><input value="" name="BUILDING_NAME" size="10"></th>
-						<th><input value="" name="ROOM_NUMBER" size="80"></th>
+						<th><input value="" name="BUILDING_NAME" size="40"></th>
+						<th><input value="" name="ROOM_NUMBER" size="10"></th>
 						<th><input type="submit" value="Insert"></th>
 					</form>
 				</tr>
@@ -107,8 +107,8 @@
 							<form id="update_location" action="location.jsp" method="post">
 								<input type="hidden" value="update" name="action">
 								<td><input value="<%= rs.getString("loc_id") %>" name="LOC_ID" readonly="true" size="10"></td>
-								<td><input value="<%= rs.getString("building_name") %>" name="BUILDING_NAME" size="10"></td>
-								<td><input value="<%= rs.getString("room_number") %>" name="ROOM_NUMBER" size="80"></td>
+								<td><input value="<%= rs.getString("building_name") %>" name="BUILDING_NAME" size="40"></td>
+								<td><input value="<%= rs.getString("room_number") %>" name="ROOM_NUMBER" size="10"></td>
 								<td><input type="submit" value="Update"></td>
 							</form>
 							<form id="delete_location" action="location.jsp" method="post">
