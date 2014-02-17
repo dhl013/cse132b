@@ -32,7 +32,6 @@
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Student Insert PreparedStatement with a success of : " + success);
-
 	}
 %>
 <!-- STUDENT UPDATE CODE -->
@@ -78,6 +77,7 @@
 
 <!-- Query Code --- MUST BE AFTER INSERT/UPDATE/DELETE SECTIONS -->
 <%
+	String student_major, student_minor;
 	String query = "SELECT * FROM Student";
 	db.executeQuery(query);
 	
@@ -88,11 +88,10 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="class.jsp" id="banner-link">Class</a>
-			<a href="course.jsp "id="banner-link">Course</a>
-			<a href="faculty.jsp" id="banner-link">Faculty</a>
-			<a href="student.jsp" id="banner-link">Student</a>
-
+			<a href="undergraduate.jsp" id="banner-link">Student->Undergraduate</a>
+			<a href="graduate.jsp" id="banner-link">Student->Graduate</a>
+			<a href="attendance.jsp" id="banner-link">Student->Attendance</a>
+			<a href="acquired_degree.jsp" id="banner-link">Student->Acquired Degree</a>
 			
 		</div>
 	</div>

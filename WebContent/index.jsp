@@ -11,14 +11,18 @@
 
 <body>
 <h1>CSE 132B Project Page</h1>
-<h2><a href='student.jsp'>Go to Student Page</a></h2>
-<h2><a href='faculty.jsp'>Go to Faculty Page</a></h2>
-<h2><a href='course.jsp'>Go to Course Page</a></h2>
-<h2><a href='course_enrollment.jsp'>Go to Course Enrollment Page</a></h2>
-<h2><a href='department.jsp'>Go to Department Page</a></h2>
-<h2><a href='location.jsp'>Go to Location Page</a></h2>
-<h2><a href='probation'>Go to Probation Page</a></h2>
-<h2><a href='thesis_committe.jsp'>Go to Thesis Committe Page</a></h2>
-<h2><a href='time_entry.jsp'>Go to Time Entry Page</a></h2>
+<h2><a href='college.jsp'>College Page</a></h2>
+<h2><a href='class.jsp'>Class Page</a></h2>
+<h2><a href='course.jsp'>Course Page</a></h2>
+<h2><a href='degree_req.jsp'>Degree Requirement Page</a></h2>
+<h2><a href='department.jsp'>Department Page</a></h2>
+<h2><a href='faculty.jsp'>Faculty Page</a></h2>
+<h2><a href='location.jsp'>Location Page</a></h2>
+<h2><a href='probation.jsp'>Probation Page</a></h2>
+<h2><a href='quarter_year.jsp'>Quarter/Year Page</a></h2>
+<h2><a href='review_section.jsp'>Review Section Page</a></h2>
+<h2><a href='student.jsp'>Student Page</a></h2>
+<h2><a href='time_entry.jsp'>Time Page</a></h2>
+<h2><a href='thesis_committee.jsp'>Thesis Committee Page</a></h2>
 </body>
 </html>

@@ -111,14 +111,8 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="class.jsp" id="banner-link">Class</a>
-			<a href="course.jsp "id="banner-link">Course</a>
-			<a href="faculty.jsp" id="banner-link">Faculty</a>
-			<a href="probation.jsp" id="banner-link">Probation</a>
-			<a href="quarter_year.jsp" id="banner-link">Quarter/Year</a>
-			<a href="student.jsp" id="banner-link">Student</a>
-			<a href="thesis_committee.jsp" id="banner-link">Thesis Committee</a>
 			<a href="category.jsp" id="banner-link">Degree->Category</a>
+			<a href="concentration.jsp" id="banner-link">Degree->Concentration</a>
 		</div>
 	</div>
 	

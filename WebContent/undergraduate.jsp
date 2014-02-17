@@ -14,40 +14,35 @@
 	db.openConnection();
 	PreparedStatement pstmt;
 %>
-<!-- PROBATION INSERTION CODE -->
+<!-- GRADUATE INSERTION CODE -->
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String probation_insert = "INSERT INTO Probation VALUES (?,?,?)";
+		String undergrads_insert = "INSERT INTO UnderGrads VALUES (?,?)";
 
-		pstmt = db.getPreparedStatment(probation_insert);
+		pstmt = db.getPreparedStatment(undergrads_insert);
 		
 		pstmt.setString(1, request.getParameter("PID") );
-		pstmt.setString(2, request.getParameter("Q_ID") );
-		pstmt.setString(3, request.getParameter("REASON") );
+		pstmt.setString(2, request.getParameter("COLLEGE") );
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed Student Insert PreparedStatement with a success of : " + success);
+		System.out.println("Executed UnderGrads Insert PreparedStatement with a success of : " + success);
 
 	}
 %>
-<!-- PROBATION UPDATE CODE -->
+<!-- GRADUATE UPDATE CODE -->
 <%
 	if( null != action && action.equals("update") ){
-		String probation_update = "UPDATE Probation SET PID = ?, q_id = ?, " +
-							      "reason = ? " +
-								  "WHERE PID = ? AND q_id = ?";
+		String undergrads_update = "UPDATE UnderGrads SET PID = ?, college_name = ? WHERRE PID = ?";
 		
-		pstmt = db.getPreparedStatment(probation_update);
+		pstmt = db.getPreparedStatment(undergrads_update);
 		
 		pstmt.setString(1, request.getParameter("PID") );
-		pstmt.setString(2, request.getParameter("Q_ID") );
-		pstmt.setString(3, request.getParameter("REASON") );
-		pstmt.setString(4, request.getParameter("PID") );
-		pstmt.setString(5, request.getParameter("Q_ID") );
+		pstmt.setString(2, request.getParameter("COLLEGE") );
+		pstmt.setString(3, request.getParameter("PID") );
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed Student Update PreparedStatement with a success of : " + success);
+		System.out.println("Executed UNDERGRADS Update PreparedStatement with a success of : " + success);
 		
 
 	}
@@ -55,23 +50,23 @@
 <!-- STUDENT DELETE CODE -->
 <%
 	if( null != action && action.equals("delete") ){
-		String probation_delete = "DELETE FROM Probation " +
-								"WHERE PID=? AND q_id = ?";
+		String undergrads_delete = "DELETE FROM UnderGrads " +
+								"WHERE PID=?";
 		
-		pstmt = db.getPreparedStatment(probation_delete);
+		pstmt = db.getPreparedStatment(undergrads_delete);
 		
 		pstmt.setString(1, request.getParameter("PID"));
-		pstmt.setString(2, request.getParameter("Q_ID"));
+		pstmt.setString(2, request.getParameter("COLLEGE"));
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed Student Delete PreparedStatement with a success of : " + success);
+		System.out.println("Executed UNDERGRADS Delete PreparedStatement with a success of : " + success);
 		
 	}
 %>
 
 <!-- Query Code --- MUST BE AFTER INSERT/UPDATE/DELETE SECTIONS -->
 <%
-	String query = "SELECT * FROM Probation";
+	String query = "SELECT * FROM UnderGrads";
 	db.executeQuery(query);
 	
 	ResultSet rs = db.getResultSet();
@@ -80,7 +75,12 @@
 <body>
 	<div id="banner">
 		<div id="banner-content">
-			<a href="index.jsp" id="banner-link">Home</a>		
+			<a href="index.jsp" id="banner-link">Home</a>
+			<a href="student.jsp" id="banner-link">Student</a>
+						<a href="major.jsp" id="banner-link">Student->Undergraduate->Major</a>
+			<a href="minor.jsp" id="banner-link">Student->Undergraduate->Minor</a>
+
+			
 		</div>
 	</div>
 	<div id="form-table" style="float:left">
@@ -88,17 +88,15 @@
 			<thead>
 				<tr>
 					<th>PID</th>
-					<th>Q_ID</th>
-					<th>Reason</th>
+					<th>College</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<form id="insert_probation" action="probation.jsp" method="post">
+					<form id="insert_undergrads" action="undergraduate.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
 						<th><input value="" name="PID" size="10"></th>
-						<th><input value="" name="Q_ID" size="10"></th>
-						<th><input value="" name="REASON" size="80"></th>
+						<th><input value="" name="COLLEGE" size="15"></th>
 						<th><input type="submit" value="Insert"></th>
 					</form>
 				</tr>
@@ -106,17 +104,16 @@
 					while( rs.next() ) {
 				%>
 						<tr>
-							<form id="update_probation" action="probation.jsp" method="post">
+							<form id="update_undergrads" action="undergraduate.jsp" method="post">
 								<input type="hidden" value="update" name="action">
 								<td><input value="<%= rs.getString("PID") %>" name="PID" readonly="true" size="10"></td>
-								<td><input value="<%= rs.getString("q_id") %>" name="Q_ID" size="10"></td>
-								<td><input value="<%= rs.getString("reason") %>" name="REASON" size="80"></td>
+								<td><input value="<%= rs.getString("college_name") %>" name="COLLEGE" size="15"></td>
 								<td><input type="submit" value="Update"></td>
 							</form>
-							<form id="delete_probation" action="probation.jsp" method="post">
+							<form id="delete_undergrads" action="undergraduate.jsp" method="post">
 								<input type="hidden" value="delete" name="action">
 								<input type="hidden" value="<%= rs.getString("PID") %>" name="PID">
-								<input type="hidden" value="<%= rs.getString("q_id") %>" name="Q_ID">
+								<input type="hidden" value="<%= rs.getString("college_name") %>" name="COLLEGE">
 								<td><input type="submit" value="Delete"></td>
 							</form>
 				<%

@@ -37,7 +37,7 @@
 /*
 	if( null != action && action.equals("update") ){
 		String quarter_year_update = "UPDATE Quarter_year SET Q_ID = ?, Quarter = ?, " +
-									 "Year = ?, WHERE Q_ID = ?";
+									 "year = ?, WHERE q_id = ?";
 		
 		pstmt = db.getPreparedStatment(quarter_year_update);
 		
@@ -58,7 +58,7 @@
 <%
 	if( null != action && action.equals("delete") ){
 		String quarter_year_delete = "DELETE FROM Quarter_year " +
-									 "WHERE Q_ID=?;";
+									 "WHERE q_id=?;";
 		
 		pstmt = db.getPreparedStatment(quarter_year_delete);
 		
@@ -82,14 +82,6 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="class.jsp" id="banner-link">Class</a>
-			<a href="course.jsp "id="banner-link">Course</a>
-			<a href="faculty.jsp" id="banner-link">Faculty</a>
-			<a href="probation.jsp" id="banner-link">Probation</a>
-			<a href="quarter_year.jsp" id="banner-link">Quarter/Year</a>
-			<a href="student.jsp" id="banner-link">Student</a>
-
-			
 		</div>
 	</div>
 	<div id="form-table" style="float:left">
@@ -123,21 +115,21 @@
 						<tr>
 							<form id="update_quarter_year" action="quarter_year.jsp" method="post">
 								<input type="hidden" value="update" name="action">
-								<td><input value="<%= rs.getString("Q_ID") %>" name="Q_ID" size="10"></td>
+								<td><input value="<%= rs.getString("q_id") %>" name="Q_ID" size="10"></td>
 								
 								<td><select name="QUARTER" form="update_qurater_year">
-									<option value="SP" <% if(rs.getString("Quarter").equals("SP")) out.println("selected"); %> >Spring</option>
-									<option value="SU" <% if(rs.getString("Quarter").equals("SU1")) out.println("selected"); %> >Summer</option>
-									<option value="SU" <% if(rs.getString("Quarter").equals("SU2")) out.println("selected"); %> >Summer</option>
-									<option value="FA" <% if(rs.getString("Quarter").equals("FA")) out.println("selected"); %> >Fall</option>
-									<option value="WI" <% if(rs.getString("Quarter").equals("WI")) out.println("selected"); %> >Winter</option>
+									<option value="SP" <% if(rs.getString("quarter").equals("SP")) out.println("selected"); %> >Spring</option>
+									<option value="SU" <% if(rs.getString("quarter").equals("SU1")) out.println("selected"); %> >Summer</option>
+									<option value="SU" <% if(rs.getString("quarter").equals("SU2")) out.println("selected"); %> >Summer</option>
+									<option value="FA" <% if(rs.getString("quarter").equals("FA")) out.println("selected"); %> >Fall</option>
+									<option value="WI" <% if(rs.getString("quarter").equals("WI")) out.println("selected"); %> >Winter</option>
 									</select></td>
-								<td><input value="<%= rs.getString("YEAR") %>" name="YEAR" size="15"></td>
+								<td><input value="<%= rs.getString("year") %>" name="YEAR" size="15"></td>
 								<td><input type="submit" value="Update"></td>
 							</form>
 							<form id="delete_quarter_year" action="quarter_year.jsp" method="post">
 								<input type="hidden" value="delete" name="action">
-								<input type="hidden" value="<%= rs.getString("Q_ID") %>" name="Q_ID">
+								<input type="hidden" value="<%= rs.getString("q_id") %>" name="Q_ID">
 								<td><input type="submit" value="Delete"></td>
 							</form>
 				<%

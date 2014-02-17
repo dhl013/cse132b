@@ -47,10 +47,6 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="class.jsp" id="banner-link">Class</a>
-			<a href="course.jsp "id="banner-link">Course</a>
-			<a href="faculty.jsp" id="banner-link">Faculty</a>
-			<a href="student.jsp" id="banner-link">Student</a>
 		</div>
 	</div>
 	<div id="form-table">
@@ -76,7 +72,7 @@
 					while( rs.next() ) {
 				%>
 					<tr>
-						<form id="udpate_time" action="time_entry.jsp" method="post">
+						<form id="update_time" action="time_entry.jsp" method="post">
 							<input type="hidden" value="update" name="action">
 							<td><input value="<%= rs.getString("t_id") %>" name="T_ID" size="5"></td>
 							<td><input value="<%= rs.getTime("starting_time") %>" name="TIME" size="20"></td>

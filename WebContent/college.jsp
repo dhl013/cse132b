@@ -5,7 +5,7 @@
 <head>
 <link rel="stylesheet" type="test/css" href="css/student.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Department Modification Page</title>
+<title>College Modification Page</title>
 </head>
 <%@ page language="java" import="cse132b.DBConn" %>
 <%@ page import="java.sql.*" %>
@@ -14,23 +14,23 @@
 	db.openConnection();
 	PreparedStatement pstmt;
 %>
-<!-- DEPARTMENT INSERTION CODE -->
+<!-- COLLEGE INSERTION CODE -->
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String dep_insert = "INSERT INTO Department VALUES (?)";
-		String dep = request.getParameter("DEPARTMENT");
+		String col_insert = "INSERT INTO College VALUES (?)";
+		String col = request.getParameter("COLLEGE");
 		
-		pstmt = db.getPreparedStatment(dep_insert);
+		pstmt = db.getPreparedStatment(col_insert);
 		
-		pstmt.setString(1, dep);
+		pstmt.setString(1, col);
 
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed PreparedStatement with a success of : " + success);
 	}
 %>
-<!-- DEPARTMENT UPDATE CODE -->
+<!-- COLLEGE UPDATE CODE -->
 <%
 	if( null != action && action.equals("update") ){
 
@@ -38,7 +38,7 @@
 	
 	}
 %>
-<!-- DEPARTMENT DELETE CODE -->
+<!-- COLLEGE DELETE CODE -->
 <%
 	if( null != action && action.equals("delete") ){
 
@@ -47,8 +47,8 @@
 %>
 <!-- PAGE INITALIZATION CODE -->
 <%
-	String depts;
-	String query = "SELECT * FROM Department";
+	String col;
+	String query = "SELECT * FROM College";
 	db.executeQuery(query);
 	ResultSet rs = db.getResultSet();
 %>
@@ -56,7 +56,6 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="division.jsp" id="banner-link">Department->Division</a>
 		</div>
 	</div>
 	
@@ -64,14 +63,14 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Department Title</th>
+					<th>College Name</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<form id="insert_dep" action="department.jsp" method="post">
+					<form id="insert_col" action="college.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
-						<th><input value="" name="DEPARTMENT" size="60"></th>
+						<th><input value="" name="COLLEGE" size="60"></th>
 						<th><input type="submit" value="Insert"></th>
 					</form>
 				</tr>
@@ -79,14 +78,14 @@
 					while( rs.next() ){
 				%>
 					<tr>
-						<form id="update_dep" action="department.jsp" method="post">
+						<form id="update_col" action="college.jsp" method="post">
 							<input type="hidden" value="update" name="action">
-							<td><input value="<%= rs.getString("dept_title") %>" name="DEPARTMENT" size="60"></td>
+							<td><input value="<%= rs.getString("college_name") %>" name="COLLEGE" size="60"></td>
 							<td><input type="submit" value="Update" disabled></td>
 						</form>
-						<form id="delete_dep" action="department.jsp" method="post">
+						<form id="delete_col" action="college.jsp" method="post">
 							<input type="hidden" value="delete" name="action">
-							<input type="hidden" value="<%= rs.getString("dept_title") %>" name="DEPARTMENT">
+							<input type="hidden" value="<%= rs.getString("college_name") %>" name="COLLEGE">
 							<td><input type="submit" value="Delete" disabled></td>
 						</form>
 					</tr>

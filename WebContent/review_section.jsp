@@ -9,6 +9,8 @@
 </head>
 <%@ page language="java" import="cse132b.DBConn" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%
 	DBConn db = new DBConn();
 	db.openConnection();
@@ -25,7 +27,12 @@
 		pstmt.setString(1, request.getParameter("COURSE_NUMBER") );
 		pstmt.setString(2, request.getParameter("CLASS_TITLE") );
 		pstmt.setString(3, request.getParameter("SECTION_ID") );
-		pstmt.setString(4, request.getParameter("DATE") );
+		
+		//// DATE ENTRY ////
+		Date d = java.sql.Date.valueOf(request.getParameter("DATE"));
+		pstmt.setDate(4, d);
+		////////////////////
+		
 		pstmt.setString(5, request.getParameter("LOC_ID") );
 		pstmt.setString(6, request.getParameter("T_ID") );
 		
@@ -35,7 +42,7 @@
 	}
 %>
 <!-- REVIEW_SECTION UPDATE CODE -->
-<%
+<% //// NEED FIXING BECAUSE OF DATE
 	if( null != action && action.equals("update") ){
 		String review_section_update = "UPDATE Review_Held_on SET course_number = ?, class_title = ?, " +
 							      "section_id = ?, date = ?, loc_id = ?, t_id = ? " +
@@ -60,7 +67,7 @@
 	}
 %>
 <!-- REVIEW_SECTION DELETE CODE -->
-<%
+<% ///// NEED FIXING BECAUSE OF DATE
 	if( null != action && action.equals("delete") ){
 		String review_section_delete = "DELETE FROM Review_Held_on " +
 				  						"WHERE course_number = ?, class_title = ?, section_id = ?";
@@ -88,16 +95,7 @@
 <body>
 	<div id="banner">
 		<div id="banner-content">
-			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="class.jsp" id="banner-link">Class</a>
-			<a href="course.jsp "id="banner-link">Course</a>
-			<a href="faculty.jsp" id="banner-link">Faculty</a>
-			<a href="location.jsp" id="banner-link">Location</a>
-			<a href="probation.jsp" id="banner-link">Probation</a>
-			<a href="quarter_year.jsp" id="banner-link">Quarter/Year</a>
-			<a href="student.jsp" id="banner-link">Student</a>
-
-			
+			<a href="index.jsp" id="banner-link">Home</a>			
 		</div>
 	</div>
 	<div id="form-table" style="float:left">
@@ -109,7 +107,7 @@
 					<th>Section ID</th>
 					<th>Date</th>
 					<th>Location</th>
-					<th>Time</th>
+					<th>Time ID</th>
 				</tr>
 			</thead>
 			<tbody> 
@@ -119,7 +117,7 @@
 						<th><input value="" name="COURSE_NUMBER" size="10"></th>
 						<th><input value="" name="CLASS_TITLE" size="10"></th>
 						<th><input value="" name="SECTION_ID" size="10"></th>
-						<th><input value="" name="DATE" size="10"></th>
+						<th><input value="" name="DATE" size="15" placeholder="YYYY-MM-DD"></th>
 						<th><input value="" name="LOC_ID" size="10"></th>
 						<th><input value="" name="T_ID" size="10"></th>
 						<th><input type="submit" value="Insert"></th>
@@ -134,7 +132,7 @@
 								<td><input value="<%= rs.getString("course_number") %>" name="COURSE_NUMBER" size="10"></td>
 								<td><input value="<%= rs.getString("class_title") %>" name="CLASS_TITLE" size="10"></td>
 								<td><input value="<%= rs.getString("section_ID") %>" name="SECTION_ID" size="10"></td>
-								<td><input value="<%= rs.getString("date") %>" name="DATE" size="10"></td>
+								<td><input value="<%= rs.getDate("date") %>" name="DATE" size="15"></td>
 								<td><input value="<%= rs.getString("loc_ID") %>" name="LOC_ID" size="10"></td>
 								<td><input value="<%= rs.getString("t_ID") %>" name="T_ID" size="10"></td>
 								<td><input type="submit" value="Update"></td>

@@ -5,7 +5,7 @@
 <head>
 <link rel="stylesheet" type="test/css" href="css/student.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Department Modification Page</title>
+<title>Taught Courses Modification Page</title>
 </head>
 <%@ page language="java" import="cse132b.DBConn" %>
 <%@ page import="java.sql.*" %>
@@ -14,23 +14,24 @@
 	db.openConnection();
 	PreparedStatement pstmt;
 %>
-<!-- DEPARTMENT INSERTION CODE -->
+<!-- TAUGHT INSERTION CODE -->
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String dep_insert = "INSERT INTO Department VALUES (?)";
-		String dep = request.getParameter("DEPARTMENT");
+		String taught_insert = "INSERT INTO Faculty_taught VALUES (?,?,?)";
 		
-		pstmt = db.getPreparedStatment(dep_insert);
+		pstmt = db.getPreparedStatment(taught_insert);
 		
-		pstmt.setString(1, dep);
+		pstmt.setString(1, request.getParameter("FACULTY"));
+		pstmt.setString(2, request.getParameter("COURSE"));
+		pstmt.setString(3, request.getParameter("Q_ID"));
 
 		
 		boolean success = db.executePreparedStatement(pstmt);
-		System.out.println("Executed PreparedStatement with a success of : " + success);
+		System.out.println("Executed Faculty_taught PreparedStatement with a success of : " + success);
 	}
 %>
-<!-- DEPARTMENT UPDATE CODE -->
+<!-- TAUGHT UPDATE CODE -->
 <%
 	if( null != action && action.equals("update") ){
 
@@ -38,7 +39,7 @@
 	
 	}
 %>
-<!-- DEPARTMENT DELETE CODE -->
+<!-- TAUGHT DELETE CODE -->
 <%
 	if( null != action && action.equals("delete") ){
 
@@ -47,8 +48,7 @@
 %>
 <!-- PAGE INITALIZATION CODE -->
 <%
-	String depts;
-	String query = "SELECT * FROM Department";
+	String query = "SELECT * FROM Faculty_taught";
 	db.executeQuery(query);
 	ResultSet rs = db.getResultSet();
 %>
@@ -56,7 +56,7 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="division.jsp" id="banner-link">Department->Division</a>
+			<a href="faculty.jsp" id="banner-link">Faculty</a>
 		</div>
 	</div>
 	
@@ -64,14 +64,18 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Department Title</th>
+					<th>Faculty Name</th>
+					<th>Course Number</th>
+					<th>Quarter/Year Taught</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<form id="insert_dep" action="department.jsp" method="post">
+					<form id="insert_taught" action="faculty_taught.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
-						<th><input value="" name="DEPARTMENT" size="60"></th>
+						<th><input value="" name="FACULTY" size="15"></th>
+						<th><input value="" name="COURSE" size="15"></th>
+						<th><input value="" name="Q_ID" size="10"></th>
 						<th><input type="submit" value="Insert"></th>
 					</form>
 				</tr>
@@ -79,14 +83,16 @@
 					while( rs.next() ){
 				%>
 					<tr>
-						<form id="update_dep" action="department.jsp" method="post">
+						<form id="update_taught" action="faculty_taught.jsp" method="post">
 							<input type="hidden" value="update" name="action">
-							<td><input value="<%= rs.getString("dept_title") %>" name="DEPARTMENT" size="60"></td>
+							<td><input value="<%= rs.getString("faculty_name") %>" name="FACULTY" size="15"></td>
+							<td><input value="<%= rs.getString("course_number") %>" name="COURSE" size="15"></td>
+							<td><input value="<%= rs.getString("q_id") %>" name="Q_ID" size="10"></td>
 							<td><input type="submit" value="Update" disabled></td>
 						</form>
-						<form id="delete_dep" action="department.jsp" method="post">
+						<form id="delete_taught" action="faculty_taught.jsp" method="post">
 							<input type="hidden" value="delete" name="action">
-							<input type="hidden" value="<%= rs.getString("dept_title") %>" name="DEPARTMENT">
+							<input type="hidden" value="<%= rs.getString("faculty_name") %>" name="FACULTY">
 							<td><input type="submit" value="Delete" disabled></td>
 						</form>
 					</tr>
