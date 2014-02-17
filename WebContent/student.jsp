@@ -23,11 +23,11 @@
 		pstmt = db.getPreparedStatment(student_insert);
 		
 		pstmt.setString(1, request.getParameter("PID") );
-		pstmt.setInt(2, Integer.parseInt(request.getParameter("SSN")) );
-		pstmt.setString(3, request.getParameter("FIRSTNAME") );
-		pstmt.setString(4, request.getParameter("MIDDLENAME") );
-		pstmt.setString(5, request.getParameter("LASTNAME") );
-		pstmt.setBoolean(6, (request.getParameter("ENROLLED").equals("true")) ? true : false );
+		pstmt.setString(2, request.getParameter("FIRSTNAME") );
+		pstmt.setString(3, request.getParameter("MIDDLENAME") );
+		pstmt.setString(4, request.getParameter("LASTNAME") );
+		pstmt.setBoolean(5, (request.getParameter("ENROLLED").equals("true")) ? true : false );
+		pstmt.setInt(6, Integer.parseInt(request.getParameter("SSN")) );
 		pstmt.setString(7, request.getParameter("RESIDENCY").toLowerCase());
 		
 		boolean success = db.executePreparedStatement(pstmt);

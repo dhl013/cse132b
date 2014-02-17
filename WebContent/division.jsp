@@ -79,7 +79,7 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Field Name</th>
+					<th>Field Name(Major/Minor Name)</th>
 					<th>Departments</th>
 				</tr>
 			</thead>
