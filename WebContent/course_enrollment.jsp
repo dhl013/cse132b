@@ -15,6 +15,29 @@
 	db.openConnection();
 	PreparedStatement pstmt;
 %>
+<!-- COURSE ENROLLMENT INSERT CODE -->
+<%
+	String action = request.getParameter("action");
+	if( null != action && action.equals("insert") ){
+		String course_enroll_insert = "INSERT INTO Currently_Enrolled VALUES (?,?,?,?,?,?)";
+		
+		String class_title_query = "SELECT class_title FROM SECTION s WHERE s.section_id='"+ request.getParameter("SECTION_ID") +"'";
+		db.executeQuery(class_title_query);
+		ResultSet tmprs = db.getResultSet();
+		tmprs.next();
+		
+		pstmt = db.getPreparedStatment(course_enroll_insert);
+		pstmt.setString(1, request.getParameter("PID"));
+		pstmt.setString(2, request.getParameter("COURSE"));
+		pstmt.setString(3, tmprs.getString("class_title"));
+		pstmt.setString(4, request.getParameter("SECTION_ID"));
+		pstmt.setString(5, "");
+		pstmt.setInt(6, Integer.parseInt(request.getParameter("UNIT")));
+		
+		boolean success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed currently_enrolled Insert PreparedStatement with a success of : " + success);
+	}
+%>
 <!-- COURSE ENROLLMENT INITALIZATION CODE -->
 <%
 	String course_select = "<select id=\"course_select\" name=\"COURSE\" form=\"insert_course_enrollment\" size=\"10\">";
@@ -27,7 +50,11 @@
 		course_select += "<option value=\"" + rs.getString("course_number") + "\">" + rs.getString("course_number") + "</option>";
 	}
 	course_select += "</select>";
-
+	
+	query = "SELECT * FROM Currently_Enrolled";
+	db.executeQuery(query);
+	rs = db.getResultSet();
+	
 %>
 <body>
 
@@ -54,21 +81,76 @@
 				<tr>
 					<form id="insert_course_enrollment" action="course_enrollment.jsp" method="post">
 						<input type="hidden" value="insert" name="action">
-						<td><input value="" name="PID"></td>
+						<td><input value="" name="PID" size="15"></td>
 						<td><%= course_select %></td>
-						<td></td>
-						<td></td>
+						<td><select id="section_select" name="SECTION_ID" form="insert_course_enrollment" size="10" style="width:200px">
+							</select></td>
+						<td><select id="unit_select" name="UNIT" form="insert_course_enrollment" size="10" style="width:100px">
+							</select></td>
+						<td><input type="submit" value="Insert"></td>
 					</form>	
 				</tr>
+				<%
+					while( rs.next() ) {
+				%>
+					<tr>
+						<form id="update_course_enrollment" action="course_enrollment.jsp" method="post">
+							<input type="hidden" value="update" name="action">
+							<td><input value="<%= rs.getString("PID") %>" size="15"></td>
+							<td><input value="<%= rs.getString("course_number") %>" size="10"></td>
+							<td><input value="<%= rs.getString("section_id") %>" size="25"></td>
+							<td><input value="<%= rs.getString("num_units") %>" size="10"></td>
+							<td><input type="submit" value="Update" disabled="disabled"></td>
+						</form>
+						<form id="delete_course_enrollment" action="course_enrollment.jsp" method="post">
+							<input type="hidden" value="delete" name="action">
+							<input type="hidden" value="<%= rs.getString("PID") %>" >
+							<input type="hidden" value="<%= rs.getString("course_number") %>" >
+							<input type="hidden" value="<%= rs.getString("section_id") %>" >
+							<td><input type="submit" value="Delete" disabled="disabled"></td>
+						</form>
+					</tr>
+				<%
+					}
+				%>
 			</tbody>
 		</table>
 	</div>
 	<script>
 		$(document).ready(function() {
 			$('#course_select').on('change', function(){
-				$.ajax('Course_section?value=CSE100')
-					.success(function(){
-						console.log('here');
+				var val = $(this).val();
+				$.ajax('Course_section?type=section&value='+val)
+					.success(function(data){
+						console.log(data);
+						var $section = $('#section_select');
+						console.log($section);
+						$.each(data, function(k,v){
+							console.log(k,v);
+							$section.append($('<option></option>')	
+									.attr("value",k)
+									.text(v));
+						});
+						$.ajax('Course_section?type=units&value='+val)
+							.success(function(data){
+								console.log(data);
+								$unit = $('#unit_select');
+								var num = data[val];
+								if(true === data['variable']){
+									for(var i = 1; i <= num; i++){
+										console.log(num);
+										$unit.append($('<option></option>')
+												 .attr("value", i)
+												 .text(i));
+									}
+								}
+								else{
+									$unit.append($('<option></option>')
+										 .attr("value", num)
+										 .text(num));
+								}
+								
+							});
 					});
 			});		
 		});

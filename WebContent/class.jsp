@@ -49,16 +49,14 @@
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Weekly Meeting Insert PreparedStatement with a success of : " + success);
 		
-		String[] insert_days = request.getParameter("DAY").split("(?=\\p{Upper})");
 		String insert_meetings = "INSERT INTO Meeting_Day VALUES (?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meetings);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
 		pstmt.setString(2, request.getParameter("W_ID"));
-		for(String d : insert_days){
-			pstmt.setString(3, d);
-			success = db.executePreparedStatement(pstmt);
-			System.out.println("Executed Meetings_Day Insert PreparedStatement with a success of : " + success + "For day: " + d);
-		}
+		pstmt.setString(3, request.getParameter("DAY"));
+		success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed Meetings_Day Insert PreparedStatement with a success of : " + success + " For day: " + request.getParameter("DAY"));
+
 		
 		String insert_meet_loc = "INSERT INTO Meeting_Location VALUES (?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meet_loc);
@@ -95,8 +93,7 @@
 	String meeting_day_select = "<select name=\"DAY\"form=\"insert_class\">";
 	String time_select = "<select name=\"TIME\"form=\"insert_class\">";
 	String quarter_select = "<select name=\"QUARTER\" form=\"insert_class\">";
-	String[] days = {"M","Tu","W","Th","F","MWF","TuTh", "MW"};
-	String[] days_keys = {"Monday", "Tuesday", "Wednesday","Thursday","Friday","MondayWednesdayFriday","TuesdayThursday","MondayWednesday"};
+	String[] days_keys = {"Monday", "Tuesday", "Wednesday","Thursday","Friday","MW","TuTh","MWF"};
 	String query = "SELECT * FROM Course";
 	db.executeQuery(query);
 	ResultSet rs = db.getResultSet();
@@ -106,10 +103,9 @@
 	}
 	course_select += "</select>";
 	
-	int i = 0;
-	for(String day : days){
-		meeting_day_select += "<option value=\"" + days_keys[i] + "\">" + day + "</option>";
-		i++;
+	
+	for(String day : days_keys){
+		meeting_day_select += "<option value=\"" + day + "\">" + day + "</option>";
 	}
 	meeting_day_select += "</select>";
 	

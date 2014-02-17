@@ -19,7 +19,7 @@
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String course_insert = "INSERT INTO Course VALUES (?,?,?)";
+		String course_insert = "INSERT INTO Course VALUES (?,?,?,?)";
 		String cnum = request.getParameter("COURSE_NUMBER");
 		
 		pstmt = db.getPreparedStatment(course_insert);
@@ -27,9 +27,11 @@
 		pstmt.setString(1, cnum);
 		pstmt.setBoolean(2, (request.getParameter("HAS_LAB").equals("true")) ? true : false );
 		pstmt.setBoolean(3, (request.getParameter("NEEDS_CONSENT").equals("true")) ? true : false );
+		pstmt.setBoolean(4, (request.getParameter("LETTER_GRADE").equals("true")) ? true : false );
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Course Insert PreparedStatement with a success of : " + success);
+		
 		
 		if( !request.getParameter("PREREQ").equals("") ) {
 			String prereq_insert = "INSERT INTO Prerequisite VALUES (?,?)";
@@ -52,25 +54,35 @@
 				success = db.executePreparedStatement(pstmt);
 				System.out.println("Executed Course Insert -- Previous Course Number PreparedStatement with a success of : " + success);
 			}
-		
 		}
+		
+		String course_units_insert = "INSERT INTO Course_units VALUES (?,?,?)";
+		pstmt = db.getPreparedStatment(course_units_insert);
+		pstmt.setString(1, cnum);
+		pstmt.setInt(2, Integer.parseInt(request.getParameter("UNITS")));
+		pstmt.setBoolean(3, (request.getParameter("UP_TO").equals("true")) ? true : false );
+		
+		success = db.executePreparedStatement(pstmt);
+		System.out.println("Executed Course Units PreparedStatement with a success of : " + success);
 	}
 %>
 <!-- COURSE INITALIZATION CODE -->
 <%
 	String prereq, prev;
-	String query = "SELECT * FROM Course";
+	String unit_select = "<select name=\"UNITS\" form=\"insert_course\" >";
+	String query = "SELECT * FROM Course c INNER JOIN Course_units cu ON c.course_number = cu.course_number";
 	db.executeQuery(query);
 	ResultSet rs = db.getResultSet();
+	
+	for (int i = 1 ; i < 9 ; i++ ){
+		unit_select += "<option value=\"" + i + "\">" + i +"</option>";
+	}
+	unit_select += "</select>";
 %>
 <body>
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
-			<a href="class.jsp" id="banner-link">Class</a>
-			<a href="course.jsp "id="banner-link">Course</a>
-			<a href="faculty.jsp" id="banner-link">Faculty</a>
-			<a href="student.jsp" id="banner-link">Student</a>
 		</div>
 	</div>
 	<div id="form-table">
@@ -80,8 +92,11 @@
 					<th>Course Number</th>
 					<th>Has Lab</th>
 					<th>Need Consent</th>
+					<th>Letter Grade Only</th>
 					<th>Prerequisites</th>
 					<th>Previous Course Numbers</th>
+					<th>Units</th>
+					<th>Variable(Up-To #)</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -97,8 +112,17 @@
 							<option value="false">False</option>
 							<option value="true">True</option>
 						</select></td>
+						<td><select name="LETTER_GRADE" form="insert_course" style="float : right">
+								<option value="false">False</option>
+								<option value="true">True</option>
+						</select></td>	
 						<td><input value="" name="PREREQ" size="25"></td>
 						<td><input value="" name="PREV_NUM" size="25"></td>
+						<td><input value="" name="UNITS" size="3"></td>
+						<td><select name="UP_TO" form="insert_course" style="float : right">
+								<option value="false">False</option>
+								<option value="true">True</option>
+						</select></td>	
 						<td><input type="submit" value="Insert"></td>
 					</form>
 				</tr>
@@ -116,6 +140,10 @@
 							<td><select name="NEEDS_CONSENT" form="update_course" style="float : right">
 									<option value="true" <% if(rs.getBoolean("needs_consent")) out.println("selected"); %> >True</option>
 									<option value="false" <% if(!rs.getBoolean("needs_consent")) out.println("selected"); %> >False</option>
+								</select></td>
+							<td><select name="LETTER_GRADE" form="update_course" style="float : right">
+									<option value="true" <% if(rs.getBoolean("letter_only")) out.println("selected"); %> >True</option>
+									<option value="false" <% if(!rs.getBoolean("letter_only")) out.println("selected"); %> >False</option>
 								</select></td>
 							<%
 								Statement stmt = db.getStatement();
@@ -139,6 +167,11 @@
 							%>
 							<td><input value="<%= prereq %>" name="PREREQ" size="25"></td>
 							<td><input value="<%= prev %>" name="PREV_NUM" size="25"></td>
+							<td><input value="<%= rs.getInt("unit") %>" size="4"></td>
+							<td><select name="UP_TO" form="update_course" style="float : right">
+									<option value="true" <% if(rs.getBoolean("up_to")) out.println("selected"); %> >True</option>
+									<option value="false" <% if(!rs.getBoolean("up_to")) out.println("selected"); %> >False</option>
+								</select></td>
 							<td><input type="submit" value="Update" disabled></td>
 						</form>
 						<form id="delete_faculty" action="faculty.jsp" method="post">

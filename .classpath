@@ -12,8 +12,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="lib" path="C:/eclipse/plugins/google-gson-2.2.4-release/gson-2.2.4.jar"/>
-	<classpathentry kind="lib" path="C:/apache-tomcat-6.0.39-windows-x64/lib/sqljdbc4.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="lib" path="C:/apache-tomcat-6.0.39-windows-x64/lib/sqljdbc4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

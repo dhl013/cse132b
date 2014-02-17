@@ -14,6 +14,7 @@
 <h2><a href='student.jsp'>Go to Student Page</a></h2>
 <h2><a href='faculty.jsp'>Go to Faculty Page</a></h2>
 <h2><a href='course.jsp'>Go to Course Page</a></h2>
+<h2><a href='course_enrollment.jsp'>Go to Course Enrollment Page</a></h2>
 <h2><a href='department.jsp'>Go to Department Page</a></h2>
 <h2><a href='location.jsp'>Go to Location Page</a></h2>
 <h2><a href='probation'>Go to Probation Page</a></h2>
