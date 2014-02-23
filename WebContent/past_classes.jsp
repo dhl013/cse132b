@@ -19,21 +19,14 @@
 <%
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
-		String past_class_insert = "INSERT INTO Course_taken VALUES (?,?,?,?,?,?)";
-		
-		String class_title_query = "SELECT class_title FROM Class c WHERE c.course_number ='" + request.getParameter("COURSE") + "'";
-		System.out.println(class_title_query);
-		db.executeQuery(class_title_query);
-		ResultSet tmprs = db.getResultSet();
-		tmprs.next();
+		String past_class_insert = "INSERT INTO Course_taken VALUES (?,?,?,?,?)";
 		
 		pstmt = db.getPreparedStatment(past_class_insert);
 		pstmt.setString(1, request.getParameter("PID"));
-		pstmt.setString(2, request.getParameter("COURSE"));
-		pstmt.setString(3, tmprs.getString("class_title"));
-		pstmt.setString(4, request.getParameter("SECTION_ID"));
-		pstmt.setString(5, request.getParameter("GRADE"));
-		pstmt.setString(6, request.getParameter("Q_ID"));
+		pstmt.setString(2, request.getParameter("SECTION_ID"));
+		pstmt.setString(3, request.getParameter("GRADE"));
+		pstmt.setString(4, request.getParameter("Q_ID"));
+		pstmt.setString(5, request.getParameter("UNITS"));
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed past_classes Insert PreparedStatement with a success of : " + success);
@@ -71,6 +64,7 @@
 					<th>Section</th>
 					<th>Quarter</th>
 					<th>Grade</th>
+					<th>Units</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -85,6 +79,7 @@
 							</select></td>
 							<input id="quarter_id" type="hidden" value="" name="Q_ID">
 						<td><input value="" name="GRADE" size="2"></td>
+						<td><input value="" name="UNITS" size="2"></td>
 						<td><input type="submit" value="Insert"></td>
 					</form>	
 				</tr>
@@ -95,17 +90,15 @@
 						<form id="update_past_classes" action="past_classes.jsp" method="post">
 							<input type="hidden" value="update" name="action">
 							<td><input value="<%= rs.getString("PID") %>" size="15"></td>
-							<td><input value="<%= rs.getString("course_number") %>" size="10"></td>
-							<input value="<%= rs.getString("class_title") %>" type="hidden" name="CLASS">
 							<td><input value="<%= rs.getString("section_id") %>" size="25"></td>
 							<td><input value="<%= rs.getString("q_id") %>" size="10"></td>
 							<td><input value="<%= rs.getString("grade") %>" size="2"></td>
+							<td><input value="<%= rs.getString("units") %>" size="2"></td>
 							<td><input type="submit" value="Update" disabled="disabled"></td>
 						</form>
 						<form id="delete_past_classes" action="past_classes.jsp" method="post">
 							<input type="hidden" value="delete" name="action">
 							<input type="hidden" value="<%= rs.getString("PID") %>" name="PID">
-							<input type="hidden" value="<%= rs.getString("course_number") %>" name="COURSE" >
 							<input type="hidden" value="<%= rs.getString("section_id") %>" name="SECTION_ID" >
 							<input value="<%= rs.getString("class_title") %>" type="hidden" name="CLASS">
 							<td><input type="submit" value="Delete" disabled="disabled"></td>

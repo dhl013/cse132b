@@ -50,7 +50,7 @@
 			level_name = "con_name";
 		}
 		
-		if(!degree_level.toString().equals("Ph.D")) {
+		if(!degree_level.toString().equals("Ph.D") || request.getParameter("REQUIRED_PARTS") != null) {
 			String deg_part = "INSERT INTO " + degree_of + " VALUES (?,?)";
 			pstmt = db.getPreparedStatment(deg_part);
 			String[] belong_deg = request.getParameter("REQUIRED_PARTS").split(",");
@@ -169,14 +169,22 @@
 							<%
 							   if(!degree_of.equals("NULL")) {
 									Statement stmt = db.getStatement();
-									query = "SELECT * FROM " + degree_of + " WHERE deg_title='" + rs.getString("deg_title") +"'";  
+									query = "SELECT * FROM " + degree_of + " WHERE deg_title='" + rs.getString("deg_title") +"'"; 
 									ResultSet fdrs = stmt.executeQuery(query);
-									StringBuilder builder = new StringBuilder();
-									while( fdrs.next() ){
-										builder.append(fdrs.getString(level_name));
-										builder.append(",");
+									
+									if(fdrs.isBeforeFirst()) {
+									
+										StringBuilder builder = new StringBuilder();
+										while( fdrs.next() ){
+											builder.append(fdrs.getString(level_name));
+											builder.append(",");
+										}
+										parts = builder.toString();
 									}
-									parts = builder.toString();
+									
+									else {
+										parts = " ";
+									}
 							   }
 								
 							%>

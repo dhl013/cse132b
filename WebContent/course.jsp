@@ -27,7 +27,7 @@
 		pstmt.setString(1, cnum);
 		pstmt.setBoolean(2, (request.getParameter("HAS_LAB").equals("true")) ? true : false );
 		pstmt.setBoolean(3, (request.getParameter("NEEDS_CONSENT").equals("true")) ? true : false );
-		pstmt.setBoolean(4, (request.getParameter("LETTER_GRADE").equals("true")) ? true : false );
+		pstmt.setString(4, request.getParameter("GRADE_OPTION"));
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Course Insert PreparedStatement with a success of : " + success);
@@ -92,7 +92,7 @@
 					<th>Course Number</th>
 					<th>Has Lab</th>
 					<th>Need Consent</th>
-					<th>Letter Grade Only</th>
+					<th>Grade Option</th>
 					<th>Prerequisites</th>
 					<th>Previous Course Numbers</th>
 					<th>Units</th>
@@ -109,12 +109,13 @@
 								<option value="true">True</option>
 							</select></td>	
 						<td><select name="NEEDS_CONSENT" form="insert_course" style="float : right">
-							<option value="false">False</option>
-							<option value="true">True</option>
-						</select></td>
-						<td><select name="LETTER_GRADE" form="insert_course" style="float : right">
 								<option value="false">False</option>
 								<option value="true">True</option>
+						</select></td>
+						<td><select name="GRADE_OPTION" form="insert_course" style="float : right">
+							<option value="Letter">Letter</option>
+							<option value="PNP">Pass/No Pass</option>
+							<option value="Both">Both</option>
 						</select></td>	
 						<td><input value="" name="PREREQ" size="25"></td>
 						<td><input value="" name="PREV_NUM" size="25"></td>
@@ -141,9 +142,10 @@
 									<option value="true" <% if(rs.getBoolean("needs_consent")) out.println("selected"); %> >True</option>
 									<option value="false" <% if(!rs.getBoolean("needs_consent")) out.println("selected"); %> >False</option>
 								</select></td>
-							<td><select name="LETTER_GRADE" form="update_course" style="float : right">
-									<option value="true" <% if(rs.getBoolean("letter_only")) out.println("selected"); %> >True</option>
-									<option value="false" <% if(!rs.getBoolean("letter_only")) out.println("selected"); %> >False</option>
+							<td><select name="GRADE_OPTION" form="update_course" style="float : right">
+									<option value="Letter" <% if(rs.getString("grade_option").equals("Letter")) out.println("selected"); %> >Letter</option>
+									<option value="PNP" <% if(rs.getString("grade_option").equals("PNP")) out.println("selected"); %> >Pass/No Pass</option>
+									<option value="Both" <% if(rs.getString("grade_option").equals("Both")) out.println("selected"); %> >Both</option>
 								</select></td>
 							<%
 								Statement stmt = db.getStatement();

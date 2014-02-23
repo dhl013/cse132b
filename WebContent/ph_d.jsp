@@ -24,7 +24,7 @@
 		
 		pstmt.setString(1, request.getParameter("PID") );
 		pstmt.setString(2, request.getParameter("STATUS"));
-		pstmt.setString(2, request.getParameter("ADVISOR"));
+		pstmt.setString(3, request.getParameter("ADVISOR"));
 		
 		boolean success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed PHD Insert PreparedStatement with a success of : " + success);

@@ -47,53 +47,55 @@
 		}
 		
 		if(insert_section){
-			String section_insert = "INSERT INTO Section VALUES (?,?,?,?,?)";
+			String section_insert = "INSERT INTO Section VALUES (?,?,?,?,?,?)";
 			pstmt = db.getPreparedStatment(section_insert);
 			pstmt.setString(1, request.getParameter("COURSE"));
 			pstmt.setString(2, request.getParameter("CLASS_TITLE"));
 			pstmt.setString(3, request.getParameter("SECTION_ID"));
 			pstmt.setBoolean(4, request.getParameter("DISC_MAN").equals("true") ? true : false );
 			pstmt.setString(5, request.getParameter("ENROLL_LIM"));
+			pstmt.setString(6, request.getParameter("QUARTER"));
 			
 			success = db.executePreparedStatement(pstmt);
 			System.out.println("Executed Section Insert PreparedStatement with a success of : " + success);
 		}
 		
-		String weekly_meeting_insert = "INSERT INTO Weekly_Meeting VALUES (?,?,?,?,?)";
+		String weekly_meeting_insert = "INSERT INTO Weekly_Meeting VALUES (?,?,?,?)";
 		pstmt = db.getPreparedStatment(weekly_meeting_insert);
-		pstmt.setString(1, request.getParameter("COURSE"));
-		pstmt.setString(2, request.getParameter("CLASS_TITLE"));
-		pstmt.setString(3, request.getParameter("SECTION_ID"));
-		pstmt.setString(4, request.getParameter("W_ID") );
-		pstmt.setString(5, request.getParameter("TYPE"));	
+		pstmt.setString(1, request.getParameter("SECTION_ID"));
+		pstmt.setString(2, request.getParameter("QUARTER"));
+		pstmt.setString(3, request.getParameter("W_ID") );
+		pstmt.setString(4, request.getParameter("TYPE"));	
 		
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Weekly Meeting Insert PreparedStatement with a success of : " + success);
 		
-		String insert_meetings = "INSERT INTO Meeting_Day VALUES (?,?,?)";
+		String insert_meetings = "INSERT INTO Meeting_Day VALUES (?,?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meetings);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
-		pstmt.setString(2, request.getParameter("W_ID"));
-		pstmt.setString(3, request.getParameter("DAY"));
+		pstmt.setString(2, request.getParameter("QUARTER"));
+		pstmt.setString(3, request.getParameter("W_ID"));
+		pstmt.setString(4, request.getParameter("DAY"));
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Meetings_Day Insert PreparedStatement with a success of : " + success + " For day: " + request.getParameter("DAY"));
 
 		
-		String insert_meet_loc = "INSERT INTO Meeting_Location VALUES (?,?,?)";
+		String insert_meet_loc = "INSERT INTO Meeting_Location VALUES (?,?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meet_loc);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
-		pstmt.setString(2, request.getParameter("W_ID"));
-		//Is the already LOC ID??
-		pstmt.setString(3, request.getParameter("LOCATION"));
+		pstmt.setString(2, request.getParameter("QUARTER"));
+		pstmt.setString(3, request.getParameter("W_ID"));
+		pstmt.setString(4, request.getParameter("LOCATION"));
 		
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Meetings Location Insert PreparedStatement with a success of : " + success);
 		
-		String insert_meet_time = "INSERT INTO Meeting_Time VALUES (?,?,?)";
+		String insert_meet_time = "INSERT INTO Meeting_Time VALUES (?,?,?,?)";
 		pstmt = db.getPreparedStatment(insert_meet_time);
 		pstmt.setString(1, request.getParameter("SECTION_ID"));
-		pstmt.setString(2, request.getParameter("W_ID"));
-		pstmt.setString(3, request.getParameter("TIME"));
+		pstmt.setString(2, request.getParameter("QUARTER"));
+		pstmt.setString(3, request.getParameter("W_ID"));
+		pstmt.setString(4, request.getParameter("TIME"));
 		
 		success = db.executePreparedStatement(pstmt);
 		System.out.println("Executed Meetings Time Insert PreparedStatement with a success of : " + success);
@@ -153,18 +155,15 @@
 			
 	quarter_select += "</select>";
 	
-	query = "SELECT s.*, w.w_id, w.w_type, md.day, ml.loc_id, t.starting_time, t.duration, co.q_id " +
-			"FROM Class c, Section s, Weekly_Meeting w, Meeting_Day md, Meeting_Location ml, Meeting_Time mt, Time_Table t, Class_offered co " +
+	query = "SELECT s.*, w.w_id, w.w_type, md.day, ml.loc_id, t.starting_time, t.duration " +
+			"FROM Class c, Section s, Weekly_meeting w, Meeting_Day md, Meeting_Location ml, Meeting_time mt, Time_Table t " +
 			"WHERE c.course_number = s.course_number " +
-			"AND   w.course_number = s.course_number " +
-			"AND   md.section_id = s.section_id " +
-			"AND   md.w_id = w.w_id " +
-			"AND   ml.section_id = s.section_id " +
-			"AND   ml.w_id = w.w_id " +
-			"AND   mt.section_id = s.section_id " +
-			"AND   mt.w_id = w.w_id " +
-			"AND   mt.t_id = t.t_id " +
-			"AND   c.course_number = co.course_number";
+			"AND   w.q_id = s.q_id " +
+			"AND   md.q_id = s.q_id " +
+			"AND   ml.q_id = s.q_id " +
+			"AND   mt.q_id = s.q_id " +
+			"AND   t.t_id = mt.t_id ";
+
 	db.executeQuery(query);
 	rs = db.getResultSet();
 	

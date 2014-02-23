@@ -11,6 +11,7 @@
 <%@ page language="java" import="cse132b.DBConn" %>
 <%@ page import="java.sql.*" %>
 <%
+	final String CURRENT_QUARTER = "WI14";
 	DBConn db = new DBConn();
 	db.openConnection();
 	PreparedStatement pstmt;
@@ -20,18 +21,14 @@
 	String action = request.getParameter("action");
 	if( null != action && action.equals("insert") ){
 		String course_enroll_insert = "INSERT INTO Currently_Enrolled VALUES (?,?,?,?,?,?)";
-		
-		String class_title_query = "SELECT class_title FROM SECTION s WHERE s.section_id='"+ request.getParameter("SECTION_ID") +"'";
-		db.executeQuery(class_title_query);
-		ResultSet tmprs = db.getResultSet();
-		tmprs.next();
+
 		
 		pstmt = db.getPreparedStatment(course_enroll_insert);
 		pstmt.setString(1, request.getParameter("PID"));
-		pstmt.setString(2, request.getParameter("COURSE"));
-		pstmt.setString(3, tmprs.getString("class_title"));
-		pstmt.setString(4, request.getParameter("SECTION_ID"));
-		pstmt.setString(5, "");
+		pstmt.setString(2, request.getParameter("SECTION_ID"));
+		pstmt.setString(3, CURRENT_QUARTER);
+		pstmt.setString(4, "");
+		pstmt.setString(5, request.getParameter("GRADE_OPTION"));
 		pstmt.setInt(6, Integer.parseInt(request.getParameter("UNIT")));
 		
 		boolean success = db.executePreparedStatement(pstmt);
@@ -70,6 +67,7 @@
 					<th>Student PID</th>
 					<th>Course</th>
 					<th>Section</th>
+					<th>Grade Option</th>
 					<th>Units</th>
 				</tr>
 			</thead>
@@ -81,6 +79,11 @@
 						<td><%= course_select %></td>
 						<td><select id="section_select" name="SECTION_ID" form="insert_course_enrollment" size="10" style="width:200px">
 							</select></td>
+						<td><select name="GRADE_OPTION" form="insert_course" style="float : right">
+							<option value="Letter">Letter</option>
+							<option value="PNP">Pass/No Pass</option>
+							<option value="Both">Both</option>
+							</select></td>	
 						<td><select id="unit_select" name="UNIT" form="insert_course_enrollment" size="10" style="width:100px">
 							</select></td>
 						<td><input type="submit" value="Insert"></td>
