@@ -10,8 +10,10 @@
 </head>
 
 <body>
-<h1>CSE 132B Project Page</h1>
-<h2><a href='insert.jsp'>Insert to Database</a></h2>
-<h2><a href='reports/report_main.jsp'>Reports</a></h2>
+<h1>Reports</h1>
+<h2><a href='../index.jsp'>Go Back to the Main Page</a></h2>
+<h2><a href='report_1a.jsp'>Reports I a: View classes currently taken by a student</a></h2>
+<h2><a href='report_1b.jsp'>Reports I b: View the roster of a class</a></h2>
+<h2><a href='report_1c.jsp'>Reports I c: View grade report of a student</a></h2>
 </body>
 </html>
