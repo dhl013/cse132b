@@ -48,7 +48,9 @@
 	}
 	course_select += "</select>";
 	
-	query = "SELECT * FROM Currently_Enrolled";
+	query = "SELECT ce.*, s.course_number " +
+			"FROM Currently_Enrolled ce, Section s " +
+			"WHERE ce.section_id = s.section_id";
 	db.executeQuery(query);
 	rs = db.getResultSet();
 	
@@ -79,10 +81,9 @@
 						<td><%= course_select %></td>
 						<td><select id="section_select" name="SECTION_ID" form="insert_course_enrollment" size="10" style="width:200px">
 							</select></td>
-						<td><select name="GRADE_OPTION" form="insert_course" style="float : right">
+						<td><select name="GRADE_OPTION" form="insert_course_enrollment" style="float : right">
 							<option value="Letter">Letter</option>
 							<option value="PNP">Pass/No Pass</option>
-							<option value="Both">Both</option>
 							</select></td>	
 						<td><select id="unit_select" name="UNIT" form="insert_course_enrollment" size="10" style="width:100px">
 							</select></td>
@@ -98,7 +99,11 @@
 							<td><input value="<%= rs.getString("PID") %>" size="15"></td>
 							<td><input value="<%= rs.getString("course_number") %>" size="10"></td>
 							<td><input value="<%= rs.getString("section_id") %>" size="25"></td>
-							<td><input value="<%= rs.getString("num_units") %>" size="10"></td>
+							<td><select name="GRADE_OPTION" form="update_course" style="float : right">
+									<option value="Letter" <% if(rs.getString("grade_option").equals("Letter")) out.println("selected"); %> >Letter</option>
+									<option value="PNP" <% if(rs.getString("grade_option").equals("PNP")) out.println("selected"); %> >Pass/No Pass</option>
+								</select></td>
+							<td><input value="<%= rs.getString("units") %>" size="10"></td>
 							<td><input type="submit" value="Update" disabled="disabled"></td>
 						</form>
 						<form id="delete_course_enrollment" action="course_enrollment.jsp" method="post">

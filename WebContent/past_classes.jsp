@@ -45,7 +45,10 @@
 	}
 	course_select += "</select>";
 	
-	query = "SELECT * FROM Course_taken";
+	query = "SELECT ct.*, s.course_number " +
+			"FROM Course_taken ct, Section s " +
+			"WHERE ct.section_id = s.section_id";
+
 	db.executeQuery(query);
 	rs = db.getResultSet();
 %>
@@ -100,7 +103,6 @@
 							<input type="hidden" value="delete" name="action">
 							<input type="hidden" value="<%= rs.getString("PID") %>" name="PID">
 							<input type="hidden" value="<%= rs.getString("section_id") %>" name="SECTION_ID" >
-							<input value="<%= rs.getString("class_title") %>" type="hidden" name="CLASS">
 							<td><input type="submit" value="Delete" disabled="disabled"></td>
 						</form>
 					</tr>
