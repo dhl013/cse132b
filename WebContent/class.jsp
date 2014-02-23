@@ -172,6 +172,7 @@
 	<div id="banner">
 		<div id="banner-content">
 			<a href="index.jsp" id="banner-link">Home</a>
+			<a href="section_instructor.jsp"  id="banner-link">Class->Section Instructor</a>
 		</div>
 	</div>
 	<div id="form-table">

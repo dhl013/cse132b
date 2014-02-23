@@ -128,6 +128,7 @@
 								<input type="hidden" value="<%= rs.getString("PID") %>" name="PID">
 								<td><input type="submit" value="Delete"></td>
 							</form>
+						</tr>
 				<%
 					}
 				%>

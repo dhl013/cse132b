@@ -93,6 +93,7 @@
 						<form id="update_past_classes" action="past_classes.jsp" method="post">
 							<input type="hidden" value="update" name="action">
 							<td><input value="<%= rs.getString("PID") %>" size="15"></td>
+							<td><input value="<%= rs.getString("course_number") %>" size="10"></td>
 							<td><input value="<%= rs.getString("section_id") %>" size="25"></td>
 							<td><input value="<%= rs.getString("q_id") %>" size="10"></td>
 							<td><input value="<%= rs.getString("grade") %>" size="2"></td>
