@@ -82,7 +82,7 @@
 	db.executeQuery(query);
 	
 	ResultSet rs = db.getResultSet();
-%>
+%> 
 
 <body>
 	<div id="banner">
@@ -92,6 +92,7 @@
 			<a href="graduate.jsp" id="banner-link">Student->Graduate</a>
 			<a href="attendance.jsp" id="banner-link">Student->Attendance</a>
 			<a href="acquired_degree.jsp" id="banner-link">Student->Acquired Degree</a>
+			<a href="pursuing_degree.jsp" id="banner-link">Student->Pursuing Degree</a>
 			
 		</div>
 	</div>

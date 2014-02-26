@@ -2,6 +2,11 @@ html, body, div {
 	background-color: #f5f5f5;
 	width : 100%;
 }
+td#gpaRow {
+	font-family : "Courier New", Courier, monospace;
+	font-weight : bold;
+	font-size: 100%;
+}
 div#form-table{
 	padding-top:50px;
 	float : left;
@@ -77,3 +82,4 @@ span#banner-text {
 	-webkit-border-radius: 5px;
 	border: 1px solid #000000;
 }
+

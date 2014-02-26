@@ -158,10 +158,15 @@
 	query = "SELECT s.*, w.w_id, w.w_type, md.day, ml.loc_id, t.starting_time, t.duration " +
 			"FROM Class c, Section s, Weekly_meeting w, Meeting_Day md, Meeting_Location ml, Meeting_time mt, Time_Table t " +
 			"WHERE c.course_number = s.course_number " +
+			"AND   s.class_title = c.class_title " +
 			"AND   w.q_id = s.q_id " +
+			"AND   w.section_id = s.section_id " +
 			"AND   md.q_id = s.q_id " +
+			"AND   md.section_id = s.section_id " +
 			"AND   ml.q_id = s.q_id " +
+			"AND   ml.section_id = s.section_id " +
 			"AND   mt.q_id = s.q_id " +
+			"AND   mt.section_id = s.section_id " +
 			"AND   t.t_id = mt.t_id ";
 
 	db.executeQuery(query);
